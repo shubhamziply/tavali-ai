@@ -1,0 +1,17 @@
+---
+/**
+ * NewsletterRow.astro — the inline "subscribe" email form (.news-row).
+ * app.js wires the no-op success behaviour by class. Each instance needs a
+ * unique input id for the associated <label>.
+ */
+interface Props {
+  /** Unique id for the email input (label association). */
+  inputId?: string;
+}
+const { inputId = 'news-email' } = Astro.props;
+---
+<form class="news-row" novalidate>
+  <label for={inputId} style="position:absolute;left:-9999px;">Email address</label>
+  <input id={inputId} type="email" placeholder="Work email" autocomplete="email" />
+  <button type="submit">Subscribe</button>
+</form>

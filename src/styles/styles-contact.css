@@ -1,0 +1,159 @@
+/* =============================================================
+   TAVALI — Contact page components
+   (loaded after styles.css + styles-site.css; reuses shared tokens)
+   ============================================================= */
+
+/* ---- Breadcrumb (shared pattern, navy hero) ---- */
+.breadcrumb { padding-top: 1.5rem; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem; list-style: none; margin: 0; padding: 0; }
+.breadcrumb a { color: rgba(255,255,255,0.62); transition: color .15s var(--ease); }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb .sep { color: rgba(255,255,255,0.32); }
+.breadcrumb [aria-current="page"] { color: rgba(255,255,255,0.95); font-weight: 600; }
+.breadcrumb .crumb-static { font-weight: 400; color: rgba(255,255,255,0.62); }
+
+/* ---- Hero ---- */
+.hero--contact .hero-grid { grid-template-columns: 1fr; max-width: 880px; }
+.hero-def {
+  margin-top: 1.4rem; font-size: clamp(1.2rem, 2.1vw, 1.55rem); line-height: 1.45;
+  color: #fff; font-weight: 600; letter-spacing: -0.01em; max-width: 56ch;
+}
+.hero-def .accent { color: var(--accent-on-navy); }
+
+/* =============================================================
+   CONTACT LAYOUT  — primary action + form (left) | aside (right)
+   ============================================================= */
+.contact-grid {
+  display: grid; grid-template-columns: 1.55fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem); align-items: start;
+}
+@media (max-width: 940px){ .contact-grid { grid-template-columns: 1fr; } }
+
+/* ---- Primary action panel (the centerpiece) ---- */
+.primary-panel {
+  position: relative; overflow: hidden;
+  background: var(--navy); color: #fff; border-radius: var(--r-lg);
+  padding: clamp(1.6rem, 3.5vw, 2.4rem); box-shadow: var(--sh-lg);
+  margin-bottom: 1.25rem;
+}
+.primary-panel .dot-field { opacity: 0.1; -webkit-mask-image: none; mask-image: none; }
+.primary-panel > * { position: relative; z-index: 2; }
+.primary-panel .pp-flag {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-on-navy); margin-bottom: 0.9rem;
+}
+.primary-panel .pp-flag .pip {
+  width: 16px; height: 8px;
+  background-image: radial-gradient(circle, var(--accent-br) 1.7px, transparent 1.9px);
+  background-size: 8px 8px; background-position: left center; background-repeat: repeat-x;
+}
+.primary-panel h2 { color: #fff; font-size: clamp(1.5rem, 3vw, 2rem); }
+.primary-panel p { margin-top: 0.85rem; color: rgba(255,255,255,0.82); line-height: 1.6; max-width: 60ch; }
+
+/* ---- Form card ---- */
+.form-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.6rem, 3.5vw, 2.4rem); box-shadow: var(--sh-md);
+}
+.form-card h3 { font-size: 1.3rem; letter-spacing: -0.02em; }
+.form-card .form-intro { margin-top: 0.4rem; color: var(--ink-muted); font-size: 0.96rem; }
+
+.lead-form { margin-top: 1.6rem; }
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.25rem; }
+@media (max-width: 560px){ .field-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field.col-span-2 { grid-column: 1 / -1; }
+
+.field label {
+  font-size: 0.88rem; font-weight: 600; color: var(--navy); letter-spacing: -0.005em;
+  display: flex; align-items: baseline; gap: 0.35rem;
+}
+.field label .req { color: var(--accent-ink); font-weight: 700; }
+.field label .opt { color: var(--grey-2); font-weight: 500; font-size: 0.8rem; }
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%; font: inherit; font-size: 0.96rem; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: 0.7rem 0.85rem; transition: border-color .15s var(--ease), background .15s var(--ease), box-shadow .15s var(--ease);
+}
+.field textarea { resize: vertical; min-height: 120px; line-height: 1.55; }
+.field input::placeholder, .field textarea::placeholder { color: var(--grey-2); opacity: 0.75; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%233F73AA' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; padding-right: 2.4rem; cursor: pointer; }
+
+.field input:hover, .field select:hover, .field textarea:hover { border-color: rgba(74,125,181,0.5); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; background: var(--white);
+  border-color: var(--accent-ink);
+  box-shadow: 0 0 0 3px rgba(74,125,181,0.22);
+}
+
+/* Validation */
+.field .field-error { font-size: 0.8rem; color: #C0392B; font-weight: 500; min-height: 0; display: none; }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: #C0392B; background: #FFF8F7; }
+.field.invalid input:focus, .field.invalid select:focus, .field.invalid textarea:focus { box-shadow: 0 0 0 3px rgba(192,57,43,0.18); }
+.field.invalid .field-error { display: block; }
+
+.form-foot { margin-top: 1.6rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.form-foot .btn { flex-shrink: 0; }
+.form-note { font-size: 0.82rem; color: var(--grey-2); line-height: 1.5; max-width: 44ch; }
+
+/* Success state */
+.form-success {
+  display: none;
+  text-align: center; padding: 2.5rem 1.5rem;
+}
+.form-success.is-shown { display: block; animation: fadeUp .4s var(--ease) both; }
+@media (prefers-reduced-motion: reduce){ .form-success.is-shown { animation: none; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.form-success .fs-mark {
+  width: 64px; height: 64px; margin: 0 auto 1.25rem; border-radius: 50%;
+  background: var(--accent-soft); display: grid; place-items: center;
+}
+.form-success h3 { font-size: 1.4rem; }
+.form-success p { margin-top: 0.65rem; color: var(--ink-muted); max-width: 42ch; margin-inline: auto; }
+.lead-form.is-hidden { display: none; }
+
+/* =============================================================
+   ASIDE  — other ways to reach us
+   ============================================================= */
+.contact-aside { display: flex; flex-direction: column; gap: 1rem; }
+.aside-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-ink); margin-bottom: 0.1rem;
+}
+.reach-card {
+  display: flex; gap: 0.9rem; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 1.1rem 1.15rem; box-shadow: var(--sh-sm);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+}
+.reach-card:hover { transform: translateY(-2px); box-shadow: var(--sh-md); border-color: rgba(74,125,181,0.35); }
+.reach-card .rc-ico { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); display: grid; place-items: center; }
+.reach-card .rc-t { display: block; font-weight: 700; font-size: 0.96rem; color: var(--navy); letter-spacing: -0.01em; }
+.reach-card .rc-link { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.2rem; font-size: 0.92rem; color: var(--accent-ink); font-weight: 600; }
+.reach-card:hover .rc-link { color: var(--accent-hover); }
+.reach-card .rc-ph { display: block; font-size: 0.74rem; color: var(--grey-2); margin-top: 0.3rem; }
+
+/* =============================================================
+   REASSURANCE + FAQ shortcut bands
+   ============================================================= */
+.reassure-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem,5vw,4rem); align-items: center; }
+@media (max-width: 820px){ .reassure-grid { grid-template-columns: 1fr; gap: 1.75rem; } }
+.reassure-lead {
+  font-size: clamp(1.4rem, 2.8vw, 1.95rem); font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.25; color: var(--navy); text-wrap: balance;
+}
+.reassure-lead .accent { color: var(--accent-ink); }
+.reassure-body { color: var(--ink-muted); line-height: 1.65; }
+
+.faq-shortcut {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.35rem, 3vw, 1.85rem) clamp(1.5rem, 3.5vw, 2.25rem);
+}
+.faq-shortcut .fs-copy { display: flex; align-items: center; gap: 1rem; }
+.faq-shortcut .fs-ico { flex-shrink: 0; width: 44px; height: 44px; border-radius: 11px; background: var(--white); border: 1px solid var(--line); display: grid; place-items: center; }
+.faq-shortcut p { font-size: 1.05rem; color: var(--navy); font-weight: 600; letter-spacing: -0.01em; }

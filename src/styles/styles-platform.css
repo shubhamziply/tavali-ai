@@ -1,0 +1,282 @@
+/* =============================================================
+   TAVALI — Platform page components
+   (loaded after styles.css + styles-site.css; reuses their tokens)
+   ============================================================= */
+
+/* ---- Breadcrumb ---- */
+.breadcrumb { padding-top: 1.5rem; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem; list-style: none; margin: 0; padding: 0; }
+.breadcrumb a { color: rgba(255,255,255,0.62); transition: color .15s var(--ease); }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb .sep { color: rgba(255,255,255,0.32); }
+.breadcrumb [aria-current="page"] { color: rgba(255,255,255,0.95); font-weight: 600; }
+
+/* Hero tweaks for platform (reuses .hero) */
+.hero--platform .hero-grid { grid-template-columns: 1fr; max-width: 920px; }
+.hero--platform .hero-sub { max-width: 58ch; }
+.hero-def {
+  margin-top: 1.4rem; font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.5;
+  color: #fff; font-weight: 600; letter-spacing: -0.01em; max-width: 40ch;
+}
+.hero-def .accent { color: var(--accent-on-navy); }
+
+/* =============================================================
+   ARCHITECTURE DIAGRAM  — the conceptual heart
+   ============================================================= */
+.arch-grid { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (max-width: 920px){ .arch-grid { grid-template-columns: 1fr; } }
+
+.arch-diagram {
+  position: relative;
+  background: var(--navy);
+  border-radius: var(--r-xl);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  box-shadow: var(--sh-xl);
+  overflow: hidden;
+}
+.arch-diagram .dot-field { opacity: 0.1; }
+.arch-cap {
+  display: flex; align-items: center; gap: 0.6rem; justify-content: center;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75); margin-bottom: 1.1rem; position: relative; z-index: 2;
+}
+.arch-cap .tavi-pip { display: inline-flex; gap: 3px; }
+.arch-cap .tavi-pip i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-br); }
+
+/* TAVI agent-fabric band weaving across the horizons */
+.arch-fabric {
+  position: relative; z-index: 2;
+  height: 30px; margin: 0 2px 0.5rem;
+  border-radius: var(--r-pill);
+  background: rgba(74,125,181,0.14);
+  border: 1px dashed rgba(91,138,192,0.5);
+  overflow: hidden;
+}
+.arch-fabric::before {
+  content: "TAVI agent fabric";
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.arch-pulse {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 80px;
+  background: linear-gradient(90deg, transparent, rgba(91,138,192,0.55), transparent);
+  animation: archFlow 3.6s linear infinite;
+}
+@keyframes archFlow { from { left: -80px; } to { left: 100%; } }
+@media (prefers-reduced-motion: reduce){ .arch-pulse { display: none; } }
+
+.arch-connect { position: relative; z-index: 2; height: 18px; margin: 0 2px; }
+.arch-connect::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(91,138,192,0.55) 1.4px, transparent 1.6px);
+  background-size: 14px 9px; background-position: center;
+}
+
+.arch-horizons {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.4rem; margin-bottom: 0.5rem;
+}
+@media (max-width: 520px){ .arch-horizons { grid-template-columns: repeat(3, 1fr); row-gap: 0.5rem; } }
+.arch-hz {
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 0.7rem 0.3rem;
+}
+.arch-hz span { line-height: 0; }
+.arch-hz small { font-size: 0.62rem; font-weight: 600; color: rgba(255,255,255,0.82); letter-spacing: 0.01em; text-align: center; }
+
+/* Shared data-layer base */
+.arch-data {
+  position: relative; z-index: 2; margin: 0 2px;
+  border-radius: 12px; padding: 0.95rem 1rem;
+  background: linear-gradient(180deg, rgba(74,125,181,0.28), rgba(74,125,181,0.16));
+  border: 1px solid rgba(91,138,192,0.45);
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  font-weight: 700; color: #fff; letter-spacing: -0.01em; font-size: 0.95rem;
+  overflow: hidden;
+}
+.arch-data::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.35) 1.4px, transparent 1.6px);
+  background-size: 16px 16px; opacity: 0.4;
+}
+.arch-data svg { position: relative; }
+
+.arch-points { margin-top: 1.75rem; display: grid; gap: 1rem; }
+.arch-point { display: flex; gap: 0.85rem; align-items: flex-start; }
+.arch-point .ap-ico {
+  flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px;
+  background: var(--accent-soft); display: grid; place-items: center; margin-top: 2px;
+}
+.arch-point h3 { font-size: 1.08rem; margin-bottom: 0.15rem; }
+.arch-point p { font-size: 0.95rem; color: var(--ink-muted); line-height: 1.5; }
+
+/* =============================================================
+   SIX HORIZONS — alternating in-depth rows
+   ============================================================= */
+.hz-row { padding-block: clamp(3.25rem, 6vw, 5.5rem); }
+.hz-inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.hz-row--flip .hz-visual { order: -1; } /* alternate visual side */
+@media (max-width: 860px){
+  .hz-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .hz-row--flip .hz-visual { order: 0; }
+  .hz-visual { order: -1; }
+}
+.hz-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-ink);
+}
+.hz-eyebrow .n { color: var(--grey-2); }
+.hz-text h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); margin: 0.85rem 0 0; }
+.hz-def { margin-top: 0.9rem; font-size: 1.1rem; line-height: 1.55; color: var(--ink-muted); max-width: 52ch; }
+.hz-def strong { color: var(--navy); font-weight: 600; }
+.hz-bullets { margin-top: 1.4rem; display: grid; gap: 0.7rem; }
+.hz-bullets li { display: flex; gap: 0.7rem; align-items: flex-start; font-size: 0.98rem; color: var(--ink); line-height: 1.45; }
+.hz-bullets .bdot {
+  flex-shrink: 0; margin-top: 0.5rem; width: 14px; height: 6px;
+  background-image: radial-gradient(circle, var(--accent) 1.6px, transparent 1.8px);
+  background-size: 7px 7px; background-repeat: repeat-x;
+}
+.hz-link { margin-top: 1.5rem; }
+
+/* Horizon visual panel (abstract, dot-matrix-derived — never a fake screenshot) */
+.hz-visual { position: relative; }
+.hz-panel {
+  position: relative; border-radius: var(--r-xl); padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--navy); box-shadow: var(--sh-lg); overflow: hidden; min-height: 280px;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.bg-surface .hz-panel { background: var(--navy); }
+.hz-panel .dot-field { opacity: 0.1; }
+.hz-panel-head { display: flex; align-items: center; gap: 0.85rem; position: relative; z-index: 2; }
+.hz-panel-ico {
+  width: 56px; height: 56px; border-radius: 14px; flex-shrink: 0;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  display: grid; place-items: center;
+}
+.hz-panel-head .t { color: #fff; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.hz-panel-head .s { color: rgba(255,255,255,0.55); font-size: 0.8rem; }
+.hz-rows { position: relative; z-index: 2; display: grid; gap: 0.6rem; margin-top: auto; }
+.hz-abrow {
+  display: flex; align-items: center; gap: 0.7rem;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 0.7rem 0.85rem;
+}
+.hz-abrow .lab { font-size: 0.82rem; color: rgba(255,255,255,0.85); font-weight: 500; }
+.hz-abrow .chip {
+  margin-left: auto; font-size: 0.7rem; font-weight: 600; color: #fff;
+  background: rgba(74,125,181,0.3); border: 1px solid rgba(91,138,192,0.5);
+  border-radius: var(--r-pill); padding: 0.2rem 0.6rem; white-space: nowrap;
+}
+.hz-abrow .chip.green { background: rgba(46,125,50,0.22); border-color: rgba(46,125,50,0.5); }
+.hz-meter { height: 7px; border-radius: 99px; background: rgba(255,255,255,0.1); overflow: hidden; flex: 1; }
+.hz-meter i { display: block; height: 100%; background: var(--accent-br); border-radius: 99px; }
+
+/* =============================================================
+   GOVERNANCE BAND
+   ============================================================= */
+.gov-inner { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (max-width: 860px){ .gov-inner { grid-template-columns: 1fr; } }
+.gov-shield {
+  position: relative; border-radius: var(--r-xl); padding: clamp(2rem,4vw,3rem);
+  background: var(--white); border: 1px solid var(--line); box-shadow: var(--sh-md);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;
+}
+.gov-shield .lock {
+  width: 86px; height: 86px; border-radius: 50%;
+  background: var(--accent-soft); display: grid; place-items: center;
+}
+.gov-tiers { display: grid; gap: 0.7rem; width: 100%; margin-top: 0.5rem; }
+.gov-tier {
+  display: flex; align-items: center; gap: 0.7rem; text-align: left;
+  border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.9rem; font-size: 0.9rem;
+}
+.gov-tier .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.gov-tier.t1 .dot { background: var(--success); }
+.gov-tier.t2 .dot { background: var(--accent); }
+.gov-tier.t3 .dot { background: var(--navy); }
+.gov-tier strong { color: var(--navy); }
+.gov-tier .tlab { color: var(--grey-2); }
+.gov-tier.locked { background: var(--surface); border-style: dashed; }
+
+/* =============================================================
+   ORG TYPES — compact row
+   ============================================================= */
+.orgs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+@media (max-width: 860px){ .orgs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px){ .orgs { grid-template-columns: 1fr; } }
+.org {
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 1.5rem; box-shadow: var(--sh-sm);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.bg-surface .org { background: var(--white); }
+.org:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
+.org .o-ico { margin-bottom: 1rem; }
+.org h3 { font-size: 1.1rem; margin-bottom: 0.35rem; }
+.org p { font-size: 0.9rem; color: var(--grey-2); line-height: 1.45; }
+
+/* =============================================================
+   INTEGRATION MOAT — single connected pipeline (Platform page)
+   Reinforces the shared .moat-* diagram so the five steps read as
+   ONE continuous left→right process: a stronger connector line that
+   runs through every station, plus directional chevrons in each gap.
+   ============================================================= */
+/* Stronger, more present connector line running through all stations.
+   Drop it to the node vertical centre so it threads the circles (the
+   shared rail sits higher, just under the caption). */
+.moat--pipeline .moat-rail {
+  top: 88px; height: 12px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.45) 1.8px, transparent 2px);
+  background-size: 16px 12px;
+}
+.moat--pipeline .moat-rail::before {
+  height: 3px;
+  background: linear-gradient(to right,
+    rgba(91,138,192,0) 0%, var(--accent-br) 9%, var(--accent-br) 91%, rgba(91,138,192,0) 100%);
+}
+/* A thin solid pipe under the dots so the line never looks broken */
+.moat--pipeline .moat-rail::after {
+  content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 1px;
+  transform: translateY(-50%);
+  background: linear-gradient(to right,
+    rgba(91,138,192,0) 0%, rgba(91,138,192,0.45) 9%, rgba(91,138,192,0.45) 91%, rgba(91,138,192,0) 100%);
+}
+
+/* Directional chevron arrows sitting on the line, centered in each gap */
+.moat--pipeline .moat-steps { position: relative; }
+.moat--pipeline .mstep { position: relative; }
+.moat--pipeline .mstep:not(:last-child)::after {
+  content: "";
+  position: absolute; top: 36px; left: calc(100% + 0.5rem);
+  width: 12px; height: 12px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  border-top: 2.5px solid var(--accent-br);
+  border-right: 2.5px solid var(--accent-br);
+  z-index: 3; pointer-events: none;
+  animation: chevPulse 3s var(--ease) infinite;
+}
+.moat--pipeline .mstep:nth-child(2)::after { animation-delay: .3s; }
+.moat--pipeline .mstep:nth-child(3)::after { animation-delay: .6s; }
+.moat--pipeline .mstep:nth-child(4)::after { animation-delay: .9s; }
+@keyframes chevPulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .moat--pipeline .mstep:not(:last-child)::after { animation: none; opacity: .8; }
+}
+
+/* Mobile: vertical pipeline — connector runs top→bottom with down-chevrons */
+@media (max-width: 860px) {
+  /* tint + strengthen the shared vertical connector */
+  .moat--pipeline .mstep:not(:last-child)::before {
+    left: 35px; width: 12px;
+    background-image: radial-gradient(circle, rgba(91,138,192,0.6) 1.7px, transparent 1.9px);
+    background-size: 12px 16px;
+  }
+  /* re-point the chevron downward, sitting on the vertical line near the next node */
+  .moat--pipeline .mstep:not(:last-child)::after {
+    top: auto; bottom: -7px; left: 35px;
+    transform: translate(-50%, 0) rotate(135deg);
+  }
+}

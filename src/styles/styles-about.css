@@ -1,0 +1,153 @@
+/* =============================================================
+   TAVALI — About page components
+   (loaded after styles.css + styles-site.css; reuses shared tokens)
+   ============================================================= */
+
+/* ---- Breadcrumb (shared pattern, navy hero) ---- */
+.breadcrumb { padding-top: 1.5rem; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem; list-style: none; margin: 0; padding: 0; }
+.breadcrumb a { color: rgba(255,255,255,0.62); transition: color .15s var(--ease); }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb .sep { color: rgba(255,255,255,0.32); }
+.breadcrumb [aria-current="page"], .breadcrumb .crumb-static { color: rgba(255,255,255,0.95); font-weight: 600; }
+.breadcrumb .crumb-static { font-weight: 400; color: rgba(255,255,255,0.62); }
+
+/* ---- Hero (single column, centered measure) ---- */
+.hero--about .hero-grid { grid-template-columns: 1fr; max-width: 900px; }
+.hero-def {
+  margin-top: 1.4rem; font-size: clamp(1.2rem, 2.1vw, 1.55rem); line-height: 1.45;
+  color: #fff; font-weight: 600; letter-spacing: -0.01em; max-width: 56ch;
+}
+.hero-def .accent { color: var(--accent-on-navy); }
+
+/* =============================================================
+   STATEMENT BLOCK  (mission + vision — big quotable sentence)
+   ============================================================= */
+.statement { max-width: 920px; margin-inline: auto; text-align: center; }
+.statement .eyebrow { justify-content: center; }
+.statement-lead {
+  margin-top: 1rem;
+  font-size: clamp(1.65rem, 3.6vw, 2.55rem);
+  font-weight: 700; letter-spacing: -0.025em; line-height: 1.18;
+  color: var(--navy); text-wrap: balance;
+}
+.bg-navy .statement-lead { color: #fff; }
+.statement-lead .accent { color: var(--accent-ink); }
+.bg-navy .statement-lead .accent { color: var(--accent-br); }
+.statement-body {
+  margin: 1.4rem auto 0; max-width: 64ch;
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem); line-height: 1.6; color: var(--ink-muted);
+}
+.bg-navy .statement-body { color: rgba(255,255,255,0.78); }
+
+/* =============================================================
+   ORIGIN STORY  (copy + convergence visual)
+   ============================================================= */
+.origin-grid {
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(2rem, 5vw, 4rem); align-items: center;
+}
+@media (max-width: 900px){ .origin-grid { grid-template-columns: 1fr; gap: 2.25rem; } }
+.origin-copy h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+.origin-copy .origin-kicker {
+  margin-top: 1.1rem; font-size: clamp(1.15rem, 1.9vw, 1.4rem); font-weight: 600;
+  color: var(--navy); letter-spacing: -0.015em; line-height: 1.4; max-width: 40ch;
+}
+.origin-copy p.body { margin-top: 1.1rem; color: var(--ink-muted); max-width: 56ch; }
+.origin-copy p.body + p.body { margin-top: 0.85rem; }
+.origin-copy .origin-close {
+  margin-top: 1.4rem; display: inline-flex; align-items: center; gap: 0.6rem;
+  font-weight: 700; color: var(--navy); font-size: 1.1rem; letter-spacing: -0.01em;
+}
+.origin-close .pip {
+  width: 16px; height: 8px; flex-shrink: 0;
+  background-image: radial-gradient(circle, var(--accent) 1.7px, transparent 1.9px);
+  background-size: 8px 8px; background-position: left center; background-repeat: repeat-x;
+}
+
+/* Convergence visual */
+.origin-visual {
+  position: relative; overflow: hidden; color: #fff;
+  background: var(--navy); border-radius: var(--r-lg);
+  padding: clamp(1.5rem, 3vw, 2rem); box-shadow: var(--sh-lg);
+}
+.origin-visual .dot-field { opacity: 0.1; }
+.origin-visual .ov-lbl {
+  position: relative; z-index: 2;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); margin-bottom: 1.1rem;
+}
+.origin-lane {
+  position: relative; z-index: 2;
+  display: flex; align-items: flex-start; gap: 0.9rem;
+  padding: 1rem 1.1rem; border-radius: var(--r-md);
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  margin-bottom: 0.75rem;
+}
+.origin-lane .ol-ico {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(74,125,181,0.22); display: grid; place-items: center;
+}
+.origin-lane .ol-t { display: block; font-weight: 600; font-size: 0.98rem; color: #fff; letter-spacing: -0.01em; }
+.origin-lane .ol-d { display: block; font-size: 0.85rem; color: rgba(255,255,255,0.66); line-height: 1.45; margin-top: 0.1rem; }
+.origin-merge {
+  position: relative; z-index: 2; text-align: center;
+  margin: 0.9rem 0 0.7rem; color: var(--accent-br);
+  font-weight: 600; font-size: 0.82rem; letter-spacing: 0.04em;
+}
+.origin-result {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  background: var(--accent); color: #fff; border-radius: 10px;
+  padding: 0.95rem; font-weight: 700; letter-spacing: -0.01em;
+}
+.origin-result svg { flex-shrink: 0; }
+
+/* =============================================================
+   VALUES / PRINCIPLES GRID  (5 cards, centered trailing row)
+   ============================================================= */
+.values-grid { display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; }
+.val-card {
+  flex: 1 1 300px; max-width: 360px;
+  display: flex; flex-direction: column;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.5rem, 3vw, 1.85rem); box-shadow: var(--sh-sm);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.bg-surface .val-card { background: var(--white); }
+.val-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); border-color: rgba(74,125,181,0.35); }
+.val-ico {
+  width: 52px; height: 52px; border-radius: 13px; margin-bottom: 1.15rem;
+  background: var(--accent-soft); display: grid; place-items: center;
+}
+.val-card h3 { font-size: 1.15rem; margin-bottom: 0.45rem; letter-spacing: -0.02em; }
+.val-card p { font-size: 0.94rem; color: var(--ink-muted); line-height: 1.5; }
+@media (max-width: 560px){ .val-card { flex-basis: 100%; max-width: none; } }
+
+/* =============================================================
+   LEADERSHIP HIGHLIGHT
+   ============================================================= */
+.lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media (max-width: 680px){ .lead-grid { grid-template-columns: 1fr; } }
+.founder-card {
+  display: flex; gap: 1.15rem; align-items: flex-start;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.5rem, 3vw, 1.85rem); box-shadow: var(--sh-sm);
+}
+.founder-mono {
+  position: relative; overflow: hidden; flex-shrink: 0;
+  width: 64px; height: 64px; border-radius: 14px;
+  background: var(--navy); color: #fff;
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em;
+}
+.founder-mono .dot-field {
+  opacity: 0.16; background-size: 14px 14px;
+  -webkit-mask-image: none; mask-image: none;
+}
+.founder-mono span { position: relative; z-index: 2; }
+.founder-card .fc-name { font-size: 1.2rem; letter-spacing: -0.02em; color: var(--navy); }
+.founder-card .fc-title { margin-top: 0.2rem; font-weight: 600; font-size: 0.92rem; color: var(--accent-ink); }
+.founder-card .fc-cred { margin-top: 0.65rem; font-size: 0.95rem; color: var(--ink-muted); line-height: 1.5; }
+.lead-foot { margin-top: 2rem; text-align: center; }
+.lead-foot .textlink { font-size: 1.05rem; }

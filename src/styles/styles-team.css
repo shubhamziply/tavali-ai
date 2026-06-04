@@ -1,0 +1,148 @@
+/* =============================================================
+   TAVALI — Team page components
+   (loaded after styles.css + styles-site.css; reuses shared tokens)
+   ============================================================= */
+
+/* ---- Breadcrumb (shared pattern, navy hero) — mirrors About ---- */
+.breadcrumb { padding-top: 1.5rem; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem; list-style: none; margin: 0; padding: 0; }
+.breadcrumb a { color: rgba(255,255,255,0.62); transition: color .15s var(--ease); }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb .sep { color: rgba(255,255,255,0.32); }
+.breadcrumb [aria-current="page"] { color: rgba(255,255,255,0.95); font-weight: 600; }
+.breadcrumb .crumb-static { font-weight: 400; color: rgba(255,255,255,0.62); }
+
+/* ---- Hero (single column, centered measure) ---- */
+.hero--team .hero-grid { grid-template-columns: 1fr; max-width: 900px; }
+.hero-def {
+  margin-top: 1.4rem; font-size: clamp(1.2rem, 2.1vw, 1.55rem); line-height: 1.45;
+  color: #fff; font-weight: 600; letter-spacing: -0.01em; max-width: 60ch;
+}
+.hero-def .accent { color: var(--accent-on-navy); }
+
+/* =============================================================
+   FOUNDERS — the centerpiece
+   ============================================================= */
+.founders { display: flex; flex-direction: column; gap: clamp(2.5rem, 5vw, 4rem); }
+.founder {
+  display: grid; grid-template-columns: 300px 1fr;
+  gap: clamp(1.75rem, 4vw, 3.25rem); align-items: start;
+}
+.founder:nth-child(even) { grid-template-columns: 1fr 300px; }
+.founder:nth-child(even) .founder-photo-wrap { order: 2; }
+@media (max-width: 820px){
+  .founder, .founder:nth-child(even) { grid-template-columns: 1fr; gap: 1.75rem; }
+  .founder:nth-child(even) .founder-photo-wrap { order: 0; }
+}
+
+/* Photo placeholder — clearly marked, brand-consistent rounded square */
+.founder-photo-wrap { position: sticky; top: calc(var(--header-h, 68px) + 1.5rem); }
+@media (max-width: 820px){ .founder-photo-wrap { position: static; max-width: 260px; } }
+.founder-photo {
+  position: relative; overflow: hidden;
+  width: 100%; aspect-ratio: 1 / 1;
+  border-radius: var(--r-lg); background: var(--navy);
+  display: grid; place-items: center; text-align: center;
+  box-shadow: var(--sh-md);
+  border: 1px solid rgba(15,42,74,0.12);
+}
+.founder-photo .dot-field { opacity: 0.16; -webkit-mask-image: none; mask-image: none; }
+.founder-photo .fp-inner { position: relative; z-index: 2; padding: 1.5rem; }
+.founder-photo .fp-mono {
+  display: inline-grid; place-items: center;
+  width: 76px; height: 76px; margin: 0 auto 1rem;
+  border-radius: 18px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-weight: 800; font-size: 1.7rem; color: #fff; letter-spacing: -0.02em;
+}
+.founder-photo .fp-label {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+.founder-photo .fp-label svg { opacity: 0.7; }
+
+.founder-body .founder-name { font-size: clamp(1.6rem, 3vw, 2.1rem); letter-spacing: -0.025em; color: var(--navy); }
+.founder-body .founder-role {
+  margin-top: 0.35rem; display: inline-flex; align-items: center; gap: 0.55rem;
+  font-weight: 700; font-size: 1.0625rem; color: var(--accent-ink); letter-spacing: -0.01em;
+}
+.founder-body .founder-role .pip {
+  width: 16px; height: 8px; flex-shrink: 0;
+  background-image: radial-gradient(circle, var(--accent) 1.7px, transparent 1.9px);
+  background-size: 8px 8px; background-position: left center; background-repeat: repeat-x;
+}
+.founder-body .founder-bio { margin-top: 1.15rem; color: var(--ink-muted); line-height: 1.65; max-width: 64ch; }
+.founder-body .founder-bio + .founder-bio { margin-top: 0.9rem; }
+.founder-body .founder-tags { margin-top: 1.35rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.founder-body .ftag {
+  font-size: 0.8rem; font-weight: 600; color: var(--navy);
+  background: var(--accent-soft); border: 1px solid rgba(74,125,181,0.22);
+  padding: 0.35rem 0.7rem; border-radius: 100px;
+}
+
+/* =============================================================
+   WHY THIS TEAM — complementary pairing
+   ============================================================= */
+.why-team-lead {
+  font-size: clamp(1.45rem, 3vw, 2.1rem); font-weight: 700; letter-spacing: -0.025em;
+  line-height: 1.22; color: #fff; text-wrap: balance; max-width: 22ch;
+}
+.why-team-lead .accent { color: var(--accent-br); }
+.why-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (max-width: 860px){ .why-grid { grid-template-columns: 1fr; gap: 2rem; } }
+.why-body p { color: rgba(255,255,255,0.8); line-height: 1.65; max-width: 62ch; }
+.why-body p + p { margin-top: 1rem; }
+
+/* Two-column complementary split visual */
+.why-split { margin-top: 2.25rem; display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: stretch; }
+@media (max-width: 540px){ .why-split { grid-template-columns: 1fr; } .why-split .why-plus { transform: rotate(90deg); } }
+.why-pillar {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--r-md); padding: 1.25rem 1.2rem;
+}
+.why-pillar .wp-ico { width: 40px; height: 40px; border-radius: 10px; background: rgba(74,125,181,0.22); display: grid; place-items: center; margin-bottom: 0.85rem; }
+.why-pillar h3 { font-size: 1.02rem; color: #fff; letter-spacing: -0.01em; }
+.why-pillar p { margin-top: 0.4rem; font-size: 0.88rem; color: rgba(255,255,255,0.66); line-height: 1.5; max-width: none; }
+.why-plus { align-self: center; color: var(--accent-br); font-weight: 700; font-size: 1.5rem; }
+
+/* =============================================================
+   GROWING / ADVISORS — placeholder cards
+   ============================================================= */
+.grow-grid { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.grow-card {
+  flex: 1 1 240px; max-width: 320px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  background: var(--white); border: 1px dashed rgba(15,42,74,0.22); border-radius: var(--r-lg);
+  padding: 1.6rem; transition: border-color .25s var(--ease), background .25s var(--ease);
+}
+.bg-surface .grow-card { background: rgba(255,255,255,0.55); }
+.grow-card:hover { border-color: rgba(74,125,181,0.5); }
+.grow-avatar {
+  position: relative; overflow: hidden;
+  width: 56px; height: 56px; border-radius: 14px; margin-bottom: 1rem;
+  background: var(--accent-soft); display: grid; place-items: center;
+  border: 1px solid rgba(74,125,181,0.2);
+}
+.grow-avatar .dot-field { opacity: 0.5; -webkit-mask-image: none; mask-image: none; }
+.grow-avatar svg { position: relative; z-index: 2; }
+.grow-card .gc-role { font-weight: 700; color: var(--navy); font-size: 1.02rem; letter-spacing: -0.01em; }
+.grow-card .gc-note { margin-top: 0.35rem; font-size: 0.9rem; color: var(--ink-muted); line-height: 1.5; }
+.grow-card .gc-soon {
+  margin-top: 1rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-ink); background: var(--accent-soft); padding: 0.3rem 0.65rem; border-radius: 100px;
+}
+@media (max-width: 560px){ .grow-card { flex-basis: 100%; max-width: none; } }
+
+/* =============================================================
+   JOIN US BAND
+   ============================================================= */
+.join-band {
+  display: grid; grid-template-columns: 1.2fr auto; gap: 2rem; align-items: center;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.75rem, 4vw, 2.75rem); box-shadow: var(--sh-sm);
+}
+@media (max-width: 720px){ .join-band { grid-template-columns: 1fr; gap: 1.5rem; } }
+.join-band h2 { font-size: clamp(1.5rem, 2.8vw, 2rem); letter-spacing: -0.025em; }
+.join-band p { margin-top: 0.85rem; color: var(--ink-muted); line-height: 1.6; max-width: 56ch; }
+.join-band .join-actions { display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start; }

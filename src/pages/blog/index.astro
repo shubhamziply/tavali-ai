@@ -1,0 +1,169 @@
+---
+/**
+ * blog/index.astro — the blog landing page.
+ * Reproduces Blog.html: hero, a featured post, the category-filter chips, and
+ * a grid of post cards — all driven by the `blog` content collection. Emits
+ * Blog + BreadcrumbList JSON-LD.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FeaturedPost from '../../components/FeaturedPost.astro';
+import PostCard from '../../components/PostCard.astro';
+import NewsletterRow from '../../components/NewsletterRow.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+// Featured = the most recent post flagged featured, else the most recent post.
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p.id !== featured?.id);
+
+// Category chips, in the original display order.
+const categories = [
+  'AI in Dentistry',
+  'Revenue & Billing',
+  'Practice Operations',
+  'Staffing',
+  'Clinical AI',
+  'DSO & Multi-Location',
+];
+
+const site = Astro.site ?? new URL('https://www.tavali.com');
+
+const blogLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': new URL('/blog/#blog', site).href,
+  name: 'Tavali Blog',
+  description:
+    'Insights on AI in dentistry, practice operations, revenue and billing, staffing, and multi-location dentistry from the team building Tavali.',
+  url: new URL('/blog/', site).href,
+  inLanguage: 'en-US',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Tavali, Inc.',
+    logo: { '@type': 'ImageObject', url: new URL('/logo.png', site).href },
+  },
+  blogPost: posts.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    description: p.data.description,
+    url: new URL(`/blog/${p.id}/`, site).href,
+    author: { '@type': 'Organization', name: p.data.author },
+    publisher: { '@type': 'Organization', name: 'Tavali, Inc.' },
+    datePublished: p.data.pubDate.toISOString().split('T')[0],
+    articleSection: p.data.category,
+  })),
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': new URL('/blog/#breadcrumb', site).href,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', site).href },
+  ],
+};
+---
+<BaseLayout
+  title="Tavali Blog — AI in Dentistry, Practice Operations &amp; Revenue"
+  description="Insights on AI in dentistry, practice operations, revenue and billing, staffing, and multi-location dentistry — from the team building Tavali, the AI-native operating system for dental practices."
+  canonical="/blog/"
+  ogTitle="Tavali Blog — AI in Dentistry, Practice Operations & Revenue"
+  ogDescription="Practical insight on AI in dentistry, revenue and billing, staffing, and running a modern dental practice — from the team building Tavali."
+  ogImage={new URL('/og-blog.png', site).href}
+  ogImageAlt="The Tavali blog — AI in dentistry, practice operations, and revenue."
+  thumbnailLabel="Blog"
+>
+  <Fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify(blogLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+  </Fragment>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero hero--blog" aria-labelledby="page-h">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-bg-dots"></div>
+        <div class="hero-glow"></div>
+      </div>
+      <div class="container">
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Blog' }]} />
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow" data-reveal>The Tavali Blog</span>
+            <h1 id="page-h" data-reveal data-delay="1">Ideas for the AI-native dental practice.</h1>
+            <p class="hero-def" data-reveal data-delay="1">The Tavali blog covers how <span class="accent">AI is reshaping dentistry</span> — from clinical documentation and claim denials to staffing and multi-location operations.</p>
+            <p class="hero-sub" data-reveal data-delay="2">Practical, opinionated writing from the team building the AI-native operating system for dental practices.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED POST -->
+    {featured && (
+      <section class="section" id="featured" aria-labelledby="featured-h">
+        <div class="container">
+          <FeaturedPost
+            category={featured.data.category}
+            title={featured.data.title}
+            excerpt={featured.data.description}
+            href={`/blog/${featured.id}/`}
+            author={featured.data.author}
+            minutesRead={featured.data.minutesRead}
+          />
+        </div>
+      </section>
+    )}
+
+    <!-- CATEGORY FILTER + POST GRID -->
+    <section class="section bg-surface" id="posts" aria-labelledby="posts-h">
+      <div class="container">
+        <div class="section-head" data-reveal style="margin-bottom:1.75rem;">
+          <span class="eyebrow">All posts</span>
+          <h2 id="posts-h">Browse the latest thinking.</h2>
+        </div>
+        <nav class="cat-filter" aria-label="Filter by category" data-reveal style="margin-bottom:2.25rem;">
+          {categories.map((cat, i) => (
+            <a href="#posts" class={i === 0 ? 'active' : undefined}>{cat}</a>
+          ))}
+        </nav>
+        <div class="post-grid">
+          {rest.map((p) => (
+            <PostCard
+              category={p.data.category}
+              title={p.data.title}
+              excerpt={p.data.description}
+              href={`/blog/${p.id}/`}
+              minutesRead={p.data.minutesRead}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section--tight" aria-labelledby="news-h">
+      <div class="container">
+        <div class="news-band" data-reveal>
+          <div class="news-band-text">
+            <h3 id="news-h">Get new posts in your inbox.</h3>
+            <p>Practical insight on AI in dentistry, revenue, and operations — no noise, just useful writing.</p>
+          </div>
+          <NewsletterRow inputId="news-email-2" />
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <FinalCta
+      id="blog-cta"
+      heading="See Tavali in action."
+      sub="Book a 30-minute demo and we’ll walk your team through the platform on your workflows."
+    />
+  </main>
+</BaseLayout>

@@ -1,0 +1,71 @@
+---
+/**
+ * Footer.astro — global site footer: CTA band, brand + newsletter, four link
+ * columns, and legal row. Identical on every page in the original site; hrefs
+ * normalized to Astro routes. Classes preserved (.news-row binds to app.js).
+ */
+interface Props {
+  /** Year shown in the copyright line. Defaults to the current year. */
+  year?: number;
+}
+const { year = new Date().getFullYear() } = Astro.props;
+---
+<footer class="site-footer" id="footer">
+  <div class="dot-field" aria-hidden="true" style="opacity:.07;mask-image:none;-webkit-mask-image:none;"></div>
+  <div class="container">
+    <div class="footer-cta-band">
+      <div>
+        <h3>Ready to see Tavali on your workflows?</h3>
+        <p>Talk to our team about clinical AI, front office, and revenue in one platform.</p>
+      </div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <a class="btn btn--primary" href="/contact">Book a Demo</a>
+        <a class="btn btn--ghost" href="/contact">Contact Sales</a>
+      </div>
+    </div>
+
+    <div class="footer-top">
+      <div class="footer-brand">
+        <!-- LOGO — Tavali horizontal lockup (white-ink, for navy footer) -->
+        <a class="footer-logo-link" href="/" aria-label="Tavali — home">
+          <img class="footer-logo" src="/assets/tavali-logo-navy-transparent.png" width="2015" height="720" alt="Tavali — AI-native operating system for dental practices" />
+        </a>
+        <p class="footer-tag">The AI-native operating system for dental practices — clinical care, operations, and revenue in one platform.</p>
+        <div class="footer-news">
+          <form class="news-row" novalidate>
+            <label for="news-email" style="position:absolute;left:-9999px;">Email address</label>
+            <input id="news-email" type="email" placeholder="Work email" autocomplete="email" />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <nav class="footer-col" aria-label="Platform">
+        <h4>Platform</h4>
+        <a href="/platform#h-clinical-ai">Clinical AI</a><a href="/platform#h-front-office">Front Office</a><a href="/platform#h-pms-ehr">PMS / EHR</a>
+        <a href="/platform#h-intelligence">Intelligence</a><a href="/platform#h-agents">Agents</a><a href="/platform#h-diagnostics">Diagnostics</a>
+      </nav>
+      <nav class="footer-col" aria-label="Solutions">
+        <h4>Solutions</h4>
+        <a href="/solutions#s-single-office">Single Office</a><a href="/solutions#s-group">Group Practice</a><a href="/solutions#s-dso">DSO</a>
+        <a href="/solutions#s-franchise">Franchise</a><a href="/solutions#s-reduce-denials">Reduce Denials</a><a href="/solutions#s-case-acceptance">Case Acceptance</a>
+      </nav>
+      <nav class="footer-col" aria-label="Resources">
+        <h4>Resources</h4>
+        <a href="/blog">Blog</a><a href="/resources#cat-guides">Guides</a><a href="/faq">FAQ</a>
+        <a href="/security">Security &amp; Compliance</a><a href="/resources#cat-patents">Patents &amp; IP</a>
+      </nav>
+      <nav class="footer-col" aria-label="Company">
+        <h4>Company</h4>
+        <a href="/about">About</a><a href="/team">Team</a><a href="/contact">Contact</a>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© Tavali, Inc. {year}</span>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/security">Security</a><a href="/llm-info">Complete Overview</a>
+      </nav>
+    </div>
+  </div>
+</footer>

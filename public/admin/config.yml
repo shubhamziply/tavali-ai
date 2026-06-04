@@ -1,0 +1,65 @@
+# public/admin/config.yml — Decap CMS configuration.
+# Maps the Astro `blog` content collection (src/content/blog/*.md) and its Zod
+# schema (src/content.config.ts) to CMS widgets. Keep the two in sync: every
+# required Zod field must have a non-empty widget here.
+
+# ---------------------------------------------------------------------------
+# BACKEND
+# Production uses Git Gateway + Netlify Identity (see DEPLOYMENT.md). To use a
+# different host (Cloudflare/Vercel), swap this for a `github`/`git-gateway`
+# backend with an OAuth provider, or migrate to Sveltia CMS auth.
+# ---------------------------------------------------------------------------
+backend:
+  name: git-gateway
+  branch: main # the branch the CMS commits to (deploys auto-trigger from here)
+
+# Enables the local proxy used by `npx decap-server` during development, so you
+# can edit content without authenticating. Safe to leave on; ignored in prod.
+local_backend: true
+
+# Where uploaded media is written in the repo, and the URL path it resolves to
+# at runtime. heroImage values are stored as `/images/uploads/<file>`.
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Friendly site link in the CMS top bar.
+site_url: https://www.tavali.com
+display_url: https://www.tavali.com
+
+collections:
+  - name: "blog"
+    label: "Blog Posts"
+    label_singular: "Blog Post"
+    description: "Articles for the Tavali blog."
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}" # filename = URL slug, e.g. /blog/<slug>/
+    extension: "md"
+    format: "frontmatter"
+    summary: "{{title}}  —  {{pubDate}}"
+    sortable_fields: ["pubDate", "title", "category"]
+    preview_path: "blog/{{slug}}"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "subtitle", label: "Subtitle (optional sub-headline)", widget: "string", required: false }
+      - { name: "description", label: "Description / Standfirst", widget: "text", hint: "1–2 sentence summary used on the card, article intro, and meta description." }
+      - { name: "pubDate", label: "Publish Date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { name: "updatedDate", label: "Last Updated", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }
+      - { name: "author", label: "Author", widget: "string", default: "Tavali Team" }
+      - { name: "heroImage", label: "Hero Image", widget: "image", required: false, hint: "Optional. Used for social/OG image." }
+      - name: "category"
+        label: "Category"
+        widget: "select"
+        default: "AI in Dentistry"
+        options:
+          - "AI in Dentistry"
+          - "Revenue & Billing"
+          - "Practice Operations"
+          - "Staffing"
+          - "Clinical AI"
+          - "DSO & Multi-Location"
+      - { name: "tags", label: "Tags", widget: "list", required: false, hint: "Comma-separated keywords." }
+      - { name: "minutesRead", label: "Read Time", widget: "string", default: "5 min read", hint: 'e.g. "6 min read" or "~6 min read".' }
+      - { name: "featured", label: "Featured on blog home?", widget: "boolean", default: false }
+      - { name: "draft", label: "Draft (hide from site)", widget: "boolean", default: false }
+      - { name: "body", label: "Body", widget: "markdown" }

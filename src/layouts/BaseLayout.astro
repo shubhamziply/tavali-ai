@@ -1,0 +1,79 @@
+---
+/**
+ * BaseLayout.astro — the shared HTML shell for every page.
+ * Renders <head> (via Head), the global chrome (skip link, bundler thumbnail,
+ * header, mobile menu, footer), the page body via <slot/>, and loads the
+ * global stylesheets + shared interactions (app.js). Page-specific CSS is
+ * imported by each page so it bundles in the correct cascade order.
+ *
+ * Pass page SEO via props; pass JSON-LD structured data through the named
+ * `jsonld` slot.
+ */
+import Head from '../components/Head.astro';
+import SkipLink from '../components/SkipLink.astro';
+import BundlerThumbnail from '../components/BundlerThumbnail.astro';
+import Header from '../components/Header.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Footer from '../components/Footer.astro';
+
+// Global design system + base site styles (tokens first, then layout).
+import '../styles/styles.css';
+import '../styles/styles-site.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogType?: 'website' | 'article';
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  twitterTitle?: string;
+  twitterDescription?: string;
+  twitterImage?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  section?: string;
+  /** Sub-label for the branded bundler thumbnail. */
+  thumbnailLabel?: string;
+  /** Ghost header CTA label/href (defaults to "See Pricing" → /pricing). */
+  ctaGhostLabel?: string;
+  ctaGhostHref?: string;
+  /** Primary header/mobile CTA href (defaults to /contact). */
+  ctaPrimaryHref?: string;
+}
+
+const {
+  thumbnailLabel = 'Tavali',
+  ctaGhostLabel,
+  ctaGhostHref,
+  ctaPrimaryHref,
+  ...head
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <Head {...head}>
+    <slot name="jsonld" />
+  </Head>
+</head>
+<body>
+  <BundlerThumbnail label={thumbnailLabel} />
+  <SkipLink />
+
+  <Header ctaGhostLabel={ctaGhostLabel} ctaGhostHref={ctaGhostHref} ctaPrimaryHref={ctaPrimaryHref} />
+  <MobileMenu ctaPrimaryHref={ctaPrimaryHref} />
+
+  <span id="top"></span>
+  <slot />
+
+  <Footer />
+
+  <!-- Shared interactions: dot-matrix icons, hero canvas, nav, FAQ, reveals -->
+  <script>
+    import '../scripts/app.js';
+  </script>
+</body>
+</html>

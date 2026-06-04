@@ -1,0 +1,40 @@
+---
+/**
+ * FeaturedPost.astro — the large "featured" blog card at the top of /blog.
+ * Links to the post and shows the flow motif visual on the right.
+ */
+interface Props {
+  category: string;
+  title: string;
+  excerpt: string;
+  href: string;
+  author?: string;
+  minutesRead?: string;
+}
+const { category, title, excerpt, href, author = 'Tavali Team', minutesRead } = Astro.props;
+---
+<a class="featured-post" href={href} aria-labelledby="featured-h" data-reveal>
+  <div class="featured-body">
+    <span class="featured-flag">★ Featured</span>
+    <span class="cat-tag">{category}</span>
+    <h2 id="featured-h">{title}</h2>
+    <p class="excerpt" set:html={excerpt} />
+    <div class="featured-foot">
+      <span class="post-meta">{author}{minutesRead && <> <span class="dot-sep" aria-hidden="true"></span> {minutesRead}</>}</span>
+      <span class="read-pill">Read article <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9m0 0L8 4m4 4l-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+  </div>
+  <div class="featured-visual" aria-hidden="true">
+    <div class="dot-field"></div>
+    <div class="fv-glow"></div>
+    <div class="fv-mark">
+      <div class="fv-flow">
+        <span class="step">finding</span><span class="arr">→</span>
+        <span class="step">chart</span><span class="arr">→</span>
+        <span class="step">plan</span><span class="arr">→</span>
+        <span class="step">estimate</span><span class="arr">→</span>
+        <span class="step lit">claim</span>
+      </div>
+    </div>
+  </div>
+</a>

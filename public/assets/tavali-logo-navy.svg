@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2015 720" width="2015" height="720">
+  
+  <rect width="2015" height="720" fill="#0A1F3D"></rect>
+  <circle cx="190.00" cy="210.00" r="25.00" fill="#4A7FB8" fill-opacity="1"></circle>
+  <circle cx="265.00" cy="210.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="340.00" cy="210.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="415.00" cy="210.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="490.00" cy="210.00" r="25.00" fill="#4A7FB8" fill-opacity="1"></circle>
+  <circle cx="190.00" cy="285.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="265.00" cy="285.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="340.00" cy="285.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="415.00" cy="285.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="490.00" cy="285.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="190.00" cy="360.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="265.00" cy="360.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="340.00" cy="360.00" r="25.00" fill="#4A7FB8" fill-opacity="1"></circle>
+  <circle cx="415.00" cy="360.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="490.00" cy="360.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="190.00" cy="435.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="265.00" cy="435.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="340.00" cy="435.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="415.00" cy="435.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="490.00" cy="435.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="190.00" cy="510.00" r="25.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="265.00" cy="510.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="340.00" cy="510.00" r="20.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <circle cx="415.00" cy="510.00" r="11.25" fill="#FFFFFF" fill-opacity="0.35"></circle>
+  <circle cx="490.00" cy="510.00" r="25.00" fill="#FFFFFF" fill-opacity="1"></circle>
+  <text x="612.00" y="554.27" class="wm" fill="#FFFFFF">tavali</text>
+</svg>

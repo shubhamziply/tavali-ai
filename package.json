@@ -1,0 +1,24 @@
+{
+  "name": "tavali-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tavali — AI-native operating system for dental practices. Astro site with Decap CMS blog.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "cms": "decap-server"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/sitemap": "^3.4.0",
+    "astro": "^5.13.0",
+    "sharp": "^0.34.0"
+  },
+  "devDependencies": {
+    "decap-server": "^3.2.0"
+  }
+}

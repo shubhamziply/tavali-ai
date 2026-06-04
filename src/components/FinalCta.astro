@@ -1,0 +1,37 @@
+---
+/**
+ * FinalCta.astro — the recurring navy "book a demo" call-to-action band that
+ * closes most pages. Props-driven so each page supplies its own copy/links
+ * while the styling stays identical.
+ */
+interface Props {
+  id?: string;
+  heading: string;
+  sub: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  ghostLabel?: string;
+  ghostHref?: string;
+}
+const {
+  id = 'footer-cta',
+  heading,
+  sub,
+  primaryLabel = 'Book a Demo',
+  primaryHref = '/contact',
+  ghostLabel = 'Explore the Platform',
+  ghostHref = '/platform',
+} = Astro.props;
+---
+<section class="section bg-navy final-cta" id={id} aria-labelledby="final-h">
+  <div class="hero-glow" aria-hidden="true" style="left:50%;top:-30%;transform:translateX(-50%);"></div>
+  <div class="dot-field" aria-hidden="true" style="opacity:.1;-webkit-mask-image:radial-gradient(ellipse 70% 100% at 50% 0,#000,transparent 70%);mask-image:radial-gradient(ellipse 70% 100% at 50% 0,#000,transparent 70%);"></div>
+  <div class="container final-cta-inner">
+    <h2 id="final-h" data-reveal>{heading}</h2>
+    <p class="lead" data-reveal data-delay="1">{sub}</p>
+    <div class="final-cta-row" data-reveal data-delay="2">
+      <a class="btn btn--primary btn--lg" href={primaryHref}>{primaryLabel} <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9m0 0L8 4m4 4l-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="btn btn--ghost btn--lg" href={ghostHref}>{ghostLabel}</a>
+    </div>
+  </div>
+</section>

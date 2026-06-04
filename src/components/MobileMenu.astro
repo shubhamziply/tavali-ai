@@ -1,0 +1,46 @@
+---
+/**
+ * MobileMenu.astro — slide-in mobile navigation + scrim overlay.
+ * Mirrors the desktop nav. Classes/structure preserved so app.js toggles
+ * (.scrim, .hamburger, .m-section.has-sub > button) bind unchanged. Hrefs are
+ * normalized to Astro routes.
+ */
+interface Props {
+  /** Primary CTA href at the foot of the menu ("Book a Demo"). */
+  ctaPrimaryHref?: string;
+}
+const { ctaPrimaryHref = '/contact' } = Astro.props;
+---
+<div class="scrim"></div>
+<aside class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+  <div class="m-section has-sub">
+    <button aria-expanded="false">Platform <svg class="caret" width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="m-sub"><div class="m-sub-inner">
+      <a href="/platform#h-clinical-ai">Clinical AI</a><a href="/platform#h-front-office">Front Office</a><a href="/platform#h-pms-ehr">PMS / EHR</a>
+      <a href="/platform#h-intelligence">Intelligence</a><a href="/platform#h-agents">Agents</a><a href="/platform#h-diagnostics">Diagnostics</a>
+    </div></div>
+  </div>
+  <div class="m-section has-sub">
+    <button aria-expanded="false">Solutions <svg class="caret" width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="m-sub"><div class="m-sub-inner">
+      <span class="m-grp">By Organization</span>
+      <a href="/solutions#s-single-office">Single Office</a><a href="/solutions#s-group">Group Practice</a><a href="/solutions#s-dso">DSO</a><a href="/solutions#s-franchise">Franchise</a>
+      <span class="m-grp">By Need</span>
+      <a href="/solutions#s-reduce-denials">Reduce Claim Denials</a><a href="/solutions#s-cut-docs">Cut Documentation Time</a><a href="/solutions#s-staffing">Solve Staffing Strain</a><a href="/solutions#s-case-acceptance">Increase Case Acceptance</a>
+    </div></div>
+  </div>
+  <div class="m-section"><a href="/pricing">Pricing</a></div>
+  <div class="m-section has-sub">
+    <button aria-expanded="false">Resources <svg class="caret" width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="m-sub"><div class="m-sub-inner">
+      <a href="/blog">Blog</a><a href="/resources#cat-guides">Guides</a><a href="/faq">FAQ</a><a href="/security">Security &amp; Compliance</a><a href="/resources#cat-patents">Patents &amp; IP</a>
+    </div></div>
+  </div>
+  <div class="m-section has-sub">
+    <button aria-expanded="false">Company <svg class="caret" width="14" height="14" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="m-sub"><div class="m-sub-inner">
+      <a href="/about">About</a><a href="/team">Team</a><a href="/contact">Contact</a>
+    </div></div>
+  </div>
+  <div class="m-cta"><a class="btn btn--primary btn--lg" href={ctaPrimaryHref}>Book a Demo</a></div>
+</aside>

@@ -1,0 +1,99 @@
+---
+/**
+ * Header.astro — site header + desktop primary navigation.
+ * Markup/classes are preserved verbatim from the original static site so the
+ * interactions in app.js (scroll state, dropdowns) bind unchanged. Nav hrefs
+ * are normalized to Astro file-based routes. The two CTA buttons vary slightly
+ * per page, so they are exposed as props (defaults match most interior pages).
+ */
+import DotIcon from './DotIcon.astro';
+
+interface Props {
+  /** Ghost (secondary) CTA button label. */
+  ctaGhostLabel?: string;
+  /** Ghost CTA href. */
+  ctaGhostHref?: string;
+  /** Primary CTA href ("Book a Demo"). */
+  ctaPrimaryHref?: string;
+}
+const {
+  ctaGhostLabel = 'See Pricing',
+  ctaGhostHref = '/pricing',
+  ctaPrimaryHref = '/contact',
+} = Astro.props;
+---
+<header class="site-header">
+  <div class="container nav-bar">
+    <!-- LOGO — Tavali horizontal lockup (white-ink, for navy header) -->
+    <a class="brand" href="/" aria-label="Tavali — home">
+      <img class="brand-logo" src="/assets/tavali-logo-navy-transparent.png" width="2015" height="720" alt="Tavali — AI-native operating system for dental practices" />
+    </a>
+
+    <!-- DESKTOP NAV -->
+    <nav class="nav-primary" aria-label="Primary">
+      <div class="nav-item has-dd">
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">Platform <svg class="caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="dropdown dropdown--wide" role="menu">
+          <a class="dd-link" href="/platform#h-clinical-ai" role="menuitem"><DotIcon class="dd-ico" dots="0010000100112110010000100" size={22} /><span class="dd-text"><span class="dd-title">Clinical AI</span><span class="dd-desc">Ambient scribe, diagnostic support &amp; charting</span></span></a>
+          <a class="dd-link" href="/platform#h-front-office" role="menuitem"><DotIcon class="dd-ico" dots="1111110201100011000111111" size={22} /><span class="dd-text"><span class="dd-title">Front Office</span><span class="dd-desc">Scheduling, communications &amp; intake</span></span></a>
+          <a class="dd-link" href="/platform#h-pms-ehr" role="menuitem"><DotIcon class="dd-ico" dots="1111000000112100000011110" size={22} /><span class="dd-text"><span class="dd-title">PMS / EHR</span><span class="dd-desc">The complete system of record</span></span></a>
+          <a class="dd-link" href="/platform#h-intelligence" role="menuitem"><DotIcon class="dd-ico" dots="0000200012001120111211112" size={22} /><span class="dd-text"><span class="dd-title">Intelligence</span><span class="dd-desc">Forecasting &amp; denial-prevention scoring</span></span></a>
+          <a class="dd-link" href="/platform#h-agents" role="menuitem"><DotIcon class="dd-ico" dots="1000100000002000000010001" size={22} /><span class="dd-text"><span class="dd-title">Agents</span><span class="dd-desc">Autonomous AI that does the work</span></span></a>
+          <a class="dd-link" href="/platform#h-diagnostics" role="menuitem"><DotIcon class="dd-ico" dots="0111011111112110101001010" size={22} /><span class="dd-text"><span class="dd-title">Diagnostics</span><span class="dd-desc">Imaging intelligence, unified per tooth</span></span></a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dd">
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">Solutions <svg class="caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="dropdown dropdown--wide" role="menu">
+          <span class="dd-group-label">By Organization</span>
+          <span class="dd-group-label">By Need</span>
+          <div class="dd-col">
+            <a class="dd-link" href="/solutions#s-single-office" role="menuitem"><span class="dd-text"><span class="dd-title">Single Office</span></span></a>
+            <a class="dd-link" href="/solutions#s-group" role="menuitem"><span class="dd-text"><span class="dd-title">Group Practice</span></span></a>
+            <a class="dd-link" href="/solutions#s-dso" role="menuitem"><span class="dd-text"><span class="dd-title">DSO</span></span></a>
+            <a class="dd-link" href="/solutions#s-franchise" role="menuitem"><span class="dd-text"><span class="dd-title">Franchise</span></span></a>
+          </div>
+          <div class="dd-col">
+            <a class="dd-link" href="/solutions#s-reduce-denials" role="menuitem"><span class="dd-text"><span class="dd-title">Reduce Claim Denials</span></span></a>
+            <a class="dd-link" href="/solutions#s-cut-docs" role="menuitem"><span class="dd-text"><span class="dd-title">Cut Documentation Time</span></span></a>
+            <a class="dd-link" href="/solutions#s-staffing" role="menuitem"><span class="dd-text"><span class="dd-title">Solve Staffing Strain</span></span></a>
+            <a class="dd-link" href="/solutions#s-case-acceptance" role="menuitem"><span class="dd-text"><span class="dd-title">Increase Case Acceptance</span></span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a class="nav-link" href="/pricing">Pricing</a>
+      </div>
+
+      <div class="nav-item has-dd">
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">Resources <svg class="caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="dropdown dropdown--single" role="menu">
+          <a class="dd-link" href="/blog" role="menuitem"><span class="dd-text"><span class="dd-title">Blog</span></span></a>
+          <a class="dd-link" href="/resources#cat-guides" role="menuitem"><span class="dd-text"><span class="dd-title">Guides</span></span></a>
+          <a class="dd-link" href="/faq" role="menuitem"><span class="dd-text"><span class="dd-title">FAQ</span></span></a>
+          <a class="dd-link" href="/security" role="menuitem"><span class="dd-text"><span class="dd-title">Security &amp; Compliance</span></span></a>
+          <a class="dd-link" href="/resources#cat-patents" role="menuitem"><span class="dd-text"><span class="dd-title">Patents &amp; IP</span></span></a>
+        </div>
+      </div>
+
+      <div class="nav-item has-dd">
+        <button class="nav-link" aria-haspopup="true" aria-expanded="false">Company <svg class="caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="dropdown dropdown--single" role="menu">
+          <a class="dd-link" href="/about" role="menuitem"><span class="dd-text"><span class="dd-title">About</span></span></a>
+          <a class="dd-link" href="/team" role="menuitem"><span class="dd-text"><span class="dd-title">Team</span></span></a>
+          <a class="dd-link" href="/contact" role="menuitem"><span class="dd-text"><span class="dd-title">Contact</span></span></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn btn--ghost" href={ctaGhostHref}>{ctaGhostLabel}</a>
+      <a class="btn btn--primary" href={ctaPrimaryHref}>Book a Demo</a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>

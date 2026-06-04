@@ -1,0 +1,170 @@
+/* =============================================================
+   TAVALI — Solutions page components
+   (loaded after styles.css + styles-site.css; reuses their tokens)
+   ============================================================= */
+
+/* Breadcrumb (same as platform) */
+.breadcrumb { padding-top: 1.5rem; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem; list-style: none; margin: 0; padding: 0; }
+.breadcrumb a { color: rgba(255,255,255,0.62); transition: color .15s var(--ease); }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb .sep { color: rgba(255,255,255,0.32); }
+.breadcrumb [aria-current="page"] { color: rgba(255,255,255,0.95); font-weight: 600; }
+
+/* Hero (reuses .hero) */
+.hero--solutions .hero-grid { grid-template-columns: 1fr; max-width: 900px; }
+.hero-def {
+  margin-top: 1.4rem; font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.5;
+  color: #fff; font-weight: 600; letter-spacing: -0.01em; max-width: 46ch;
+}
+.hero-def .accent { color: var(--accent-on-navy); }
+
+/* =============================================================
+   TWO PATHS BAND
+   ============================================================= */
+.paths-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: clamp(2rem,4vw,2.75rem); }
+@media (max-width: 720px){ .paths-grid { grid-template-columns: 1fr; } }
+.path-card {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 1.1rem;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 1.5rem 1.6rem; box-shadow: var(--sh-sm);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.path-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); border-color: rgba(74,125,181,0.4); }
+.path-ico {
+  flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px;
+  background: var(--accent-soft); display: grid; place-items: center;
+}
+.path-card h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
+.path-card p { font-size: 0.92rem; color: var(--grey-2); line-height: 1.45; }
+.path-card .path-arrow { margin-left: auto; flex-shrink: 0; color: var(--accent-ink); transition: transform .2s var(--ease); }
+.path-card:hover .path-arrow { transform: translateX(4px); }
+
+/* =============================================================
+   PATH HEADERS  (make the two grids read as two parallel routes)
+   ============================================================= */
+.path-head {
+  display: flex; align-items: flex-start; gap: clamp(1rem, 2.5vw, 1.75rem);
+  max-width: 860px; margin-bottom: clamp(2rem, 4vw, 2.75rem);
+}
+.path-num {
+  flex-shrink: 0; position: relative;
+  font-size: clamp(2.5rem, 5vw, 3.6rem); font-weight: 800; line-height: 0.9;
+  letter-spacing: -0.04em; color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+}
+.path-head--need .path-num { color: var(--navy); }
+.path-num-dot { position: absolute; top: -2px; right: -14px; line-height: 0; }
+.path-tag {
+  display: inline-block;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-ink); margin-bottom: 0.5rem;
+}
+.path-head--need .path-tag { color: var(--grey-2); }
+.path-head-text { padding-top: 0.2rem; }
+.path-head-text h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); }
+.path-head-text .lead { margin-top: 0.85rem; }
+
+/* =============================================================
+   SOLUTION CARD GRIDS  (by organization / by need)
+   ============================================================= */
+.sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media (max-width: 760px){ .sol-grid { grid-template-columns: 1fr; } }
+
+/* Distinct icon treatments so the two grids never read as one run of cards */
+.sol-grid--org .sol-ico {
+  width: 60px; height: 60px; border-radius: 14px;
+  background: var(--accent-soft); display: grid; place-items: center;
+  margin-bottom: 1.25rem;
+}
+.sol-grid--need .sol-ico {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--line);
+  display: grid; place-items: center; margin-bottom: 1.1rem;
+}
+.sol-grid--need .sol-card { border-top: 3px solid var(--accent); }
+
+/* "OR" divider between the two paths — reinforces the either/or choice */
+.path-divider {
+  display: flex; align-items: center; gap: 1.25rem;
+  max-width: 520px; margin: 0 auto;
+  padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+}
+.path-divider-line {
+  flex: 1; height: 7px;
+  background-image: radial-gradient(circle, var(--grey) 1.4px, transparent 1.6px);
+  background-size: 11px 7px; background-repeat: repeat-x; background-position: center;
+  opacity: 0.5;
+}
+.path-divider-or {
+  flex-shrink: 0; display: grid; place-items: center;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--line);
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--grey-2); text-transform: lowercase;
+  box-shadow: var(--sh-sm);
+}
+
+.sol-card {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.5rem, 3vw, 2rem); box-shadow: var(--sh-sm);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.bg-surface .sol-card { background: var(--white); }
+.sol-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); border-color: rgba(74,125,181,0.4); }
+.sol-ico { margin-bottom: 1.15rem; }
+.sol-kicker {
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-ink); margin-bottom: 0.4rem;
+}
+.sol-card h3 { font-size: 1.3rem; margin-bottom: 0.55rem; letter-spacing: -0.02em; }
+.sol-stmt { font-size: 1rem; color: var(--ink-muted); line-height: 1.55; }
+.sol-bullets { margin-top: 1.1rem; display: grid; gap: 0.55rem; }
+.sol-bullets li { display: flex; gap: 0.65rem; align-items: flex-start; font-size: 0.92rem; color: var(--ink); line-height: 1.4; }
+.sol-bullets .bdot {
+  flex-shrink: 0; margin-top: 0.45rem; width: 14px; height: 6px;
+  background-image: radial-gradient(circle, var(--accent) 1.6px, transparent 1.8px);
+  background-size: 7px 7px; background-repeat: repeat-x;
+}
+.sol-link { margin-top: 1.35rem; padding-top: 1.1rem; border-top: 1px solid var(--line); }
+
+/* =============================================================
+   CONNECTIVE INSIGHT BAND
+   ============================================================= */
+.connect { position: relative; overflow: hidden; text-align: center; }
+.connect .container { position: relative; z-index: 2; }
+.connect-inner { max-width: 780px; margin-inline: auto; }
+.connect h2 { color: #fff; font-size: clamp(1.8rem, 3.6vw, 2.7rem); }
+.connect h2 .hl { color: var(--accent-on-navy); }
+.connect .lead { margin: 1.1rem auto 0; }
+
+/* =============================================================
+   OUTCOMES STRIP  (compact metric row)
+   ============================================================= */
+.metric-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--white); overflow: hidden; box-shadow: var(--sh-sm);
+}
+@media (max-width: 720px){ .metric-strip { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px){ .metric-strip { grid-template-columns: 1fr; } }
+.metric {
+  padding: 1.6rem 1.4rem; text-align: center;
+  border-right: 1px solid var(--line);
+}
+.metric:last-child { border-right: none; }
+@media (max-width: 720px){
+  .metric { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .metric:nth-child(2n) { border-right: none; }
+}
+.metric .m-num {
+  font-size: clamp(1.9rem, 3.2vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em;
+  color: var(--accent-ink); line-height: 1; display: inline-flex; align-items: baseline; gap: 0.1rem;
+}
+.metric .m-num .dir { font-size: 1.2rem; }
+.metric .m-lbl { margin-top: 0.5rem; font-size: 0.9rem; color: var(--grey-2); font-weight: 500; }
+.outcomes-note { margin-top: 1.5rem; font-style: italic; color: var(--grey-2); font-size: 0.92rem; text-align: center; }

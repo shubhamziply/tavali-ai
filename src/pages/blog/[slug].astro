@@ -1,0 +1,99 @@
+---
+/**
+ * blog/[slug].astro — dynamic route for a single blog post.
+ * Builds one static page per (non-draft) entry in the `blog` collection,
+ * renders the Markdown body inside BlogLayout, and emits BlogPosting +
+ * BreadcrumbList JSON-LD. Related posts are the three most recent others.
+ */
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const sorted = posts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
+
+  return sorted.map((post) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      // Up to three other posts, most recent first, for "Related".
+      related: sorted.filter((p) => p.id !== post.id).slice(0, 3),
+    },
+  }));
+}
+
+const { post, related } = Astro.props;
+const { Content } = await render(post);
+
+const site = Astro.site ?? new URL('https://www.tavali.com');
+const canonical = `/blog/${post.id}/`;
+const canonicalUrl = new URL(canonical, site).href;
+const isoDate = post.data.pubDate.toISOString().split('T')[0];
+const modIso = (post.data.updatedDate ?? post.data.pubDate)
+  .toISOString()
+  .split('T')[0];
+
+const relatedProps = related.map((p) => ({
+  category: p.data.category,
+  title: p.data.title,
+  href: `/blog/${p.id}/`,
+  minutesRead: p.data.minutesRead,
+  comingSoon: false,
+}));
+
+// --- BlogPosting JSON-LD ---
+const blogPostingLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${canonicalUrl}#article`,
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: isoDate,
+  dateModified: modIso,
+  inLanguage: 'en-US',
+  articleSection: post.data.category,
+  author: { '@type': 'Organization', name: post.data.author, url: site.href },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Tavali, Inc.',
+    logo: { '@type': 'ImageObject', url: new URL('/logo.png', site).href },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  ...(post.data.heroImage
+    ? { image: new URL(post.data.heroImage, site).href }
+    : {}),
+};
+
+// --- BreadcrumbList JSON-LD ---
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${canonicalUrl}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', site).href },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: canonicalUrl },
+  ],
+};
+---
+<BlogLayout
+  title={post.data.title}
+  subtitle={post.data.subtitle}
+  description={post.data.description}
+  category={post.data.category}
+  author={post.data.author}
+  pubDate={post.data.pubDate}
+  minutesRead={post.data.minutesRead}
+  canonical={canonical}
+  ogImage={post.data.heroImage ? new URL(post.data.heroImage, site).href : undefined}
+  related={relatedProps}
+>
+  <Fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify(blogPostingLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+  </Fragment>
+
+  <Content />
+</BlogLayout>

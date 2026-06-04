@@ -1,0 +1,135 @@
+---
+/**
+ * BlogLayout.astro — article page template for a single blog post.
+ * Wraps BaseLayout and reproduces the original Article.html structure: the
+ * navy article hero (breadcrumb, category, title, standfirst, byline), the
+ * .article-body wrapper for rendered Markdown (default slot), a related-posts
+ * grid, and the closing CTA. Article-specific JSON-LD is forwarded via the
+ * `jsonld` slot.
+ */
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import DotIcon from '../components/DotIcon.astro';
+import PostCard from '../components/PostCard.astro';
+import FinalCta from '../components/FinalCta.astro';
+
+interface RelatedPost {
+  category: string;
+  title: string;
+  href?: string;
+  minutesRead?: string;
+  comingSoon?: boolean;
+}
+
+interface Props {
+  title: string;
+  /** Optional secondary line under the H1. */
+  subtitle?: string;
+  description: string;
+  category: string;
+  author?: string;
+  pubDate: Date;
+  minutesRead?: string;
+  /** Short breadcrumb label for the current article. */
+  crumbLabel?: string;
+  canonical?: string;
+  ogImage?: string;
+  related?: RelatedPost[];
+}
+
+const {
+  title,
+  subtitle,
+  description,
+  category,
+  author = 'Tavali Team',
+  pubDate,
+  minutesRead = '~6 min read',
+  crumbLabel,
+  canonical,
+  ogImage,
+  related = [],
+} = Astro.props;
+
+const displayDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const isoDate = pubDate.toISOString().split('T')[0];
+---
+<BaseLayout
+  title={`${title} | Tavali Blog`}
+  description={description}
+  canonical={canonical}
+  ogType="article"
+  ogTitle={title}
+  ogImage={ogImage}
+  publishedTime={isoDate}
+  modifiedTime={isoDate}
+  section={category}
+  thumbnailLabel="Article"
+>
+  <slot name="jsonld" slot="jsonld" />
+
+  <article aria-labelledby="art-h">
+    <header class="article-hero section--tight">
+      <div class="hero-bg-dots" aria-hidden="true"></div>
+      <div class="container">
+        <Breadcrumb items={[
+          { label: 'Home', href: '/' },
+          { label: 'Blog', href: '/blog' },
+          { label: crumbLabel ?? title },
+        ]} />
+        <div class="article-head">
+          <span class="cat-tag">{category}</span>
+          <h1 id="art-h">{title}{subtitle && <span style="font-weight:600;color:rgba(255,255,255,0.7);font-size:0.7em;display:block;margin-top:.5rem;letter-spacing:-0.02em;">{subtitle}</span>}</h1>
+          <p class="article-standfirst">{description}</p>
+          <div class="article-byline">
+            <span class="author"><DotIcon class="av" dots="2000200000002000000000000" size={16} /> {author}</span>
+            <span class="dot-sep" aria-hidden="true"></span>
+            <time datetime={isoDate}>{displayDate}</time>
+            <span class="dot-sep" aria-hidden="true"></span>
+            <span>{minutesRead}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="section">
+      <div class="container">
+        <div class="article-body" data-reveal>
+          <slot />
+        </div>
+      </div>
+    </div>
+  </article>
+
+  {related.length > 0 && (
+    <section class="section bg-surface" aria-labelledby="related-h">
+      <div class="container related">
+        <div class="section-head" data-reveal style="margin-bottom:1.75rem;">
+          <span class="eyebrow">Keep reading</span>
+          <h2 id="related-h">Related posts.</h2>
+        </div>
+        <div class="related-grid">
+          {related.map((post) => (
+            <PostCard
+              category={post.category}
+              title={post.title}
+              href={post.href}
+              minutesRead={post.minutesRead}
+              comingSoon={post.comingSoon}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <FinalCta
+    id="article-cta"
+    heading="One intelligent platform. Built around AI."
+    sub="See what an AI-native operating system can do for your practice."
+  />
+</BaseLayout>

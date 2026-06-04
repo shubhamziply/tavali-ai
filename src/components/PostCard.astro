@@ -1,0 +1,37 @@
+---
+/**
+ * PostCard.astro — a blog post card for the listing/related grids.
+ * Renders a clickable card for a published post, or a non-interactive
+ * "Coming soon" card when `comingSoon` is set.
+ */
+interface Props {
+  category: string;
+  title: string;
+  excerpt?: string;
+  href?: string;
+  minutesRead?: string;
+  comingSoon?: boolean;
+}
+const { category, title, excerpt, href = '#', minutesRead, comingSoon = false } = Astro.props;
+---
+{comingSoon ? (
+  <article class="post-card post-card--soon">
+    <span class="cat-tag">{category}</span>
+    <h3 set:html={title} />
+    {excerpt && <p class="excerpt" set:html={excerpt} />}
+    <div class="card-foot">
+      <span class="soon-pill">Coming soon</span>
+      {minutesRead && <span class="post-meta">{minutesRead}</span>}
+    </div>
+  </article>
+) : (
+  <a class="post-card" href={href} data-reveal>
+    <span class="cat-tag">{category}</span>
+    <h3 set:html={title} />
+    {excerpt && <p class="excerpt" set:html={excerpt} />}
+    <div class="card-foot">
+      {minutesRead && <span class="post-meta">{minutesRead}</span>}
+      <span class="read-pill">Read <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9m0 0L8 4m4 4l-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+  </a>
+)}

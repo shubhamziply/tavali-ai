@@ -1,0 +1,6 @@
+{
+  "//": "TypeScript config — extends Astro's strict preset for typed component props.",
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}

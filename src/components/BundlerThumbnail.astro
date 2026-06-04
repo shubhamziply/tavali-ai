@@ -1,0 +1,24 @@
+---
+/**
+ * BundlerThumbnail.astro — inert <template> carrying a branded preview SVG.
+ * Carried over from the original pages (used by the design tool's bundler).
+ * Only the second line of label text changes per page.
+ */
+interface Props {
+  /** Sub-label shown under the "Tavali" wordmark (e.g. "Home", "Blog"). */
+  label?: string;
+}
+const { label = 'Home' } = Astro.props;
+---
+<template id="__bundler_thumbnail" data-bg-color="#0F2A4A">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0F2A4A"/>
+    <g fill="#7FA8D3" opacity="0.55">
+      <circle cx="520" cy="250" r="10"/><circle cx="560" cy="250" r="10"/><circle cx="600" cy="250" r="10"/><circle cx="640" cy="250" r="10"/>
+      <circle cx="520" cy="290" r="10"/><circle cx="640" cy="290" r="10"/>
+      <circle cx="520" cy="330" r="10"/><circle cx="560" cy="330" r="10"/><circle cx="600" cy="330" r="10"/><circle cx="640" cy="330" r="10"/>
+    </g>
+    <text x="600" y="470" font-family="Hanken Grotesk, sans-serif" font-size="72" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="-2">Tavali</text>
+    <text x="600" y="540" font-family="Hanken Grotesk, sans-serif" font-size="34" font-weight="600" fill="#7FA8D3" text-anchor="middle">{label}</text>
+  </svg>
+</template>

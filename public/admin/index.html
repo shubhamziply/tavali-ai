@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  public/admin/index.html — Decap CMS entry point.
+  Served at /admin/. Loads the Decap CMS bundle, which reads config.yml from
+  this same folder. Netlify Identity widget is included so the production
+  (Git Gateway) backend can authenticate editors; it is a no-op during local
+  development with `npx decap-server`.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Tavali — Content Manager</title>
+  </head>
+  <body>
+    <!-- Netlify Identity widget (production auth via Git Gateway) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Decap CMS -->
+    <script src="https://unpkg.com/decap-cms@^3.8.4/dist/decap-cms.js"></script>
+    <script>
+      // After login on the live site, redirect from the Identity landing back
+      // into the CMS. Harmless locally.
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', function (user) {
+          if (!user) {
+            window.netlifyIdentity.on('login', function () {
+              document.location.href = '/admin/';
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

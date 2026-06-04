@@ -1,0 +1,18 @@
+---
+/**
+ * DotIcon.astro — a single dot-matrix icon placeholder.
+ * Emits the `[data-dots]` span that app.js hydrates into an SVG at runtime.
+ * Kept as a component so the brand's 5x5 dot-grid icons are declared once,
+ * consistently, everywhere they appear (nav, hero, sections).
+ */
+interface Props {
+  /** 25-char pattern of 0/1/2 cells (0 = dim, 1 = solid, 2 = accent). */
+  dots: string;
+  /** Rendered pixel size. */
+  size?: number;
+  /** Extra classes, e.g. palette modifiers: dots--on-dark / dots--on-accent. */
+  class?: string;
+}
+const { dots, size = 44, class: className = '' } = Astro.props;
+---
+<span class={className} data-dots={dots} data-size={size}></span>
