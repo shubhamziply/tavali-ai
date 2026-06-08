@@ -248,15 +248,6 @@
     });
   });
 
-  /* ---------- Newsletter (no-op demo) ---------- */
-  var news = document.querySelector('.news-row');
-  if (news) news.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var input = news.querySelector('input');
-    var btn = news.querySelector('button');
-    if (input && input.value) { btn.textContent = 'Thanks ✓'; input.value = ''; input.placeholder = "You're on the list"; }
-  });
-
   /* ---------- Reveal on scroll (progressive enhancement) ----------
      Important: CSS transitions are paused while a document isn't being
      painted (some embedded / preview / prerender contexts). So we never

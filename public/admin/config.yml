@@ -5,17 +5,18 @@
 
 # ---------------------------------------------------------------------------
 # BACKEND
-# Production uses Git Gateway + Netlify Identity (see DEPLOYMENT.md). To use a
-# different host (Cloudflare/Vercel), swap this for a `github`/`git-gateway`
-# backend with an OAuth provider, or migrate to Sveltia CMS auth.
+# Production on Vercel: use a GitHub OAuth backend (see DEPLOYMENT.md). Local
+# dev uses `local_backend` + `npx decap-server` — no login required.
 # ---------------------------------------------------------------------------
 backend:
   name: git-gateway
   branch: main # the branch the CMS commits to (deploys auto-trigger from here)
 
-# Enables the local proxy used by `npx decap-server` during development, so you
-# can edit content without authenticating. Safe to leave on; ignored in prod.
-local_backend: true
+# Local proxy for dev only (`npm run cms`). Production uses git-gateway above.
+# allowed_hosts ensures decap-server is never used on www.tavali.com.
+local_backend:
+  url: http://localhost:8081/api/v1
+  allowed_hosts: ['localhost', '127.0.0.1', '::1']
 
 # Where uploaded media is written in the repo, and the URL path it resolves to
 # at runtime. heroImage values are stored as `/images/uploads/<file>`.
@@ -46,7 +47,14 @@ collections:
       - { name: "pubDate", label: "Publish Date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - { name: "updatedDate", label: "Last Updated", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }
       - { name: "author", label: "Author", widget: "string", default: "Tavali Team" }
-      - { name: "heroImage", label: "Hero Image", widget: "image", required: false, hint: "Optional. Used for social/OG image." }
+      - name: "heroImage"
+        label: "Hero Image"
+        widget: "image"
+        required: false
+        hint: "Shown on the article page, blog cards, and social previews. Uploads save to /images/uploads/."
+        media_library:
+          config:
+            multiple: false
       - name: "category"
         label: "Category"
         widget: "select"
@@ -62,4 +70,4 @@ collections:
       - { name: "minutesRead", label: "Read Time", widget: "string", default: "5 min read", hint: 'e.g. "6 min read" or "~6 min read".' }
       - { name: "featured", label: "Featured on blog home?", widget: "boolean", default: false }
       - { name: "draft", label: "Draft (hide from site)", widget: "boolean", default: false }
-      - { name: "body", label: "Body", widget: "markdown" }
+      - { name: "body", label: "Body", widget: "markdown", hint: "Use the image button to insert images from /images/uploads/." }

@@ -96,23 +96,3 @@ a.res-card:hover .res-link .btn-arrow { transform: translateX(4px); }
 .feature h3 { color: #fff; font-size: 1.4rem; margin-bottom: 0.5rem; }
 .feature p { color: rgba(255,255,255,0.78); font-size: 0.96rem; line-height: 1.55; }
 .feature .btn { margin-top: 1.5rem; align-self: flex-start; }
-
-/* =============================================================
-   NEWSLETTER BAND
-   ============================================================= */
-.news-band {
-  display: flex; align-items: center; justify-content: space-between; gap: 1.75rem; flex-wrap: wrap;
-  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
-  padding: clamp(1.75rem, 3vw, 2.25rem) clamp(1.75rem, 3.5vw, 2.5rem);
-}
-.news-band-text { max-width: 46ch; }
-.news-band h3 { font-size: 1.35rem; margin-bottom: 0.3rem; }
-.news-band p { color: var(--grey-2); font-size: 0.95rem; }
-.news-band .news-row { max-width: 380px; flex: 1; min-width: 280px; }
-.news-band .news-row input {
-  background: var(--white); border: 1px solid var(--line); color: var(--ink);
-}
-.news-band .news-row input::placeholder { color: var(--grey-2); }
-.news-band .news-row input:focus { outline: 2px solid var(--accent-ink); border-color: transparent; }
-.news-band .news-row button { background: var(--accent-ink); white-space: nowrap; }
-.news-band .news-row button:hover { background: var(--accent-hover); }

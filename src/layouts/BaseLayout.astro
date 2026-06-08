@@ -74,23 +74,8 @@ const {
   <!-- Shared interactions: dot-matrix icons, hero canvas, nav, FAQ, reveals -->
   <script>
     import '../scripts/app.js';
+    import '../scripts/newsletter.js';
   </script>
 
-  <!-- Netlify Identity widget — must be on every page so invite/recovery tokens
-       in the URL hash (#invite_token=, #recovery_token=, #confirmation_token=)
-       are caught and trigger the password-set popup, regardless of which URL
-       Netlify's email links to. After login it redirects the editor to /admin/. -->
-  <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script is:inline>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', function (user) {
-        if (!user) {
-          window.netlifyIdentity.on('login', function () {
-            document.location.href = '/admin/';
-          });
-        }
-      });
-    }
-  </script>
 </body>
 </html>

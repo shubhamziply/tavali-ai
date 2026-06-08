@@ -29,6 +29,17 @@ export default function rehypeArticleEnhance() {
           ? [...classes, 'pullquote']
           : [classes, 'pullquote'];
       }
+      // Normalize CMS image paths (Decap may omit the leading slash).
+      if (node.tagName === 'img' && node.properties?.src) {
+        const src = String(node.properties.src);
+        if (
+          !src.startsWith('http://') &&
+          !src.startsWith('https://') &&
+          !src.startsWith('/')
+        ) {
+          node.properties.src = `/${src}`;
+        }
+      }
     });
   };
 }

@@ -1,0 +1,27 @@
+---
+/**
+ * admin/index.astro — Decap CMS entry point at /admin/
+ * config.yml stays in public/admin/ (served at /admin/config.yml).
+ * Local editing: run `npm run cms` + `npm run dev`, then open /admin/
+ */
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Tavali — Content Manager</title>
+  </head>
+  <body>
+    <script is:inline>
+      // Decap resolves config.yml from the admin folder; /admin (no slash) → 404.
+      if (!window.location.pathname.endsWith('/')) {
+        window.location.replace(
+          window.location.pathname + '/' + window.location.search + window.location.hash
+        );
+      }
+    </script>
+    <script src="https://unpkg.com/decap-cms@^3.8.4/dist/decap-cms.js"></script>
+  </body>
+</html>

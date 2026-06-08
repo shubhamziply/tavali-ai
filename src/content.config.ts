@@ -18,7 +18,14 @@ const blog = defineCollection({
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('Tavali Team'),
     // Path under /public (e.g. /images/uploads/...) or external URL.
-    heroImage: z.string().optional(),
+    heroImage: z
+      .string()
+      .optional()
+      .transform((val) => {
+        if (!val) return val;
+        if (val.startsWith('http://') || val.startsWith('https://')) return val;
+        return val.startsWith('/') ? val : `/${val}`;
+      }),
     // Editorial category — matches the blog filter chips.
     category: z.enum([
       'AI in Dentistry',

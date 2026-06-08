@@ -8,8 +8,8 @@
  * `jsonld` slot.
  */
 import BaseLayout from './BaseLayout.astro';
-import Breadcrumb from '../components/Breadcrumb.astro';
 import DotIcon from '../components/DotIcon.astro';
+import '../styles/styles-blog.css';
 import PostCard from '../components/PostCard.astro';
 import FinalCta from '../components/FinalCta.astro';
 
@@ -34,6 +34,7 @@ interface Props {
   crumbLabel?: string;
   canonical?: string;
   ogImage?: string;
+  heroImage?: string;
   related?: RelatedPost[];
 }
 
@@ -48,6 +49,7 @@ const {
   crumbLabel,
   canonical,
   ogImage,
+  heroImage,
   related = [],
 } = Astro.props;
 
@@ -76,11 +78,11 @@ const isoDate = pubDate.toISOString().split('T')[0];
     <header class="article-hero section--tight">
       <div class="hero-bg-dots" aria-hidden="true"></div>
       <div class="container">
-        <Breadcrumb items={[
+        <!-- <Breadcrumb items={[
           { label: 'Home', href: '/' },
           { label: 'Blog', href: '/blog' },
           { label: crumbLabel ?? title },
-        ]} />
+        ]} /> -->
         <div class="article-head">
           <span class="cat-tag">{category}</span>
           <h1 id="art-h">{title}{subtitle && <span style="font-weight:600;color:rgba(255,255,255,0.7);font-size:0.7em;display:block;margin-top:.5rem;letter-spacing:-0.02em;">{subtitle}</span>}</h1>
@@ -98,6 +100,11 @@ const isoDate = pubDate.toISOString().split('T')[0];
 
     <div class="section">
       <div class="container">
+        {heroImage && (
+          <figure class="article-hero-image" data-reveal>
+            <img src={heroImage} alt="" loading="eager" decoding="async" />
+          </figure>
+        )}
         <div class="article-body" data-reveal>
           <slot />
         </div>

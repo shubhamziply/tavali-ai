@@ -43,6 +43,25 @@
 		return ok;
 	}
 
+	// Format optional phone as (XXX) XXX-XXXX
+	var phoneEl = document.getElementById("f-phone");
+	if (phoneEl) {
+		phoneEl.addEventListener("input", function () {
+			var digits = phoneEl.value.replace(/\D/g, "").slice(0, 10);
+			if (!digits.length) {
+				phoneEl.value = "";
+				return;
+			}
+			if (digits.length < 4) {
+				phoneEl.value = "(" + digits;
+			} else if (digits.length < 7) {
+				phoneEl.value = "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+			} else {
+				phoneEl.value = "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6);
+			}
+		});
+	}
+
 	// Live re-validation once a field has been touched/erroring
 	Object.keys(rules).forEach(function (id) {
 		var el = document.getElementById(id);

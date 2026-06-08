@@ -28,7 +28,7 @@ public/
 ```
 
 ## Editing content
-See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full local-CMS, Netlify,
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full local-CMS, Vercel,
 custom-domain, and editor workflow guides.
 
 ## Notes

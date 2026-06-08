@@ -1,0 +1,38 @@
+name: Notify blog subscribers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: github.event.head_commit.message != ''
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed blog posts
+        id: changed
+        run: |
+          FILES=$(git diff --name-only HEAD~1 HEAD -- 'src/content/blog/*.md' | tr '\n' ' ')
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+
+      - name: Notify subscribers for each new/changed post
+        if: steps.changed.outputs.files != ''
+        env:
+          NOTIFY_SECRET: ${{ secrets.NOTIFY_SECRET }}
+          SITE_URL: https://www.tavali.com
+        run: |
+          for file in ${{ steps.changed.outputs.files }}; do
+            TITLE=$(grep '^title:' "$file" | head -1 | sed 's/^title: *//; s/^"//; s/"$//')
+            DESC=$(grep '^description:' "$file" | head -1 | sed 's/^description: *//; s/^"//; s/"$//')
+            SLUG=$(basename "$file" .md)
+            curl -sS -X POST "$SITE_URL/api/notify-new-post" \
+              -H "Authorization: Bearer $NOTIFY_SECRET" \
+              -H "Content-Type: application/json" \
+              -d "{\"title\":\"$TITLE\",\"description\":\"$DESC\",\"url\":\"$SITE_URL/blog/$SLUG/\"}"
+          done

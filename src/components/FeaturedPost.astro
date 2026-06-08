@@ -9,14 +9,25 @@ interface Props {
   excerpt: string;
   href: string;
   author?: string;
+  pubDate?: Date;
+  heroImage?: string;
   minutesRead?: string;
 }
-const { category, title, excerpt, href, author = 'Tavali Team', minutesRead } = Astro.props;
+const { category, title, excerpt, href, author = 'Tavali Team', pubDate, heroImage, minutesRead } = Astro.props;
+
+const displayDate = pubDate?.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 ---
 <a class="featured-post" href={href} aria-labelledby="featured-h" data-reveal>
   <div class="featured-body">
     <span class="featured-flag">★ Featured</span>
-    <span class="cat-tag">{category}</span>
+    <div class="featured-meta-row">
+      <span class="cat-tag">{category}</span>
+      {displayDate && <time class="post-date" datetime={pubDate!.toISOString().split('T')[0]}>{displayDate}</time>}
+    </div>
     <h2 id="featured-h">{title}</h2>
     <p class="excerpt" set:html={excerpt} />
     <div class="featured-foot">
@@ -24,17 +35,23 @@ const { category, title, excerpt, href, author = 'Tavali Team', minutesRead } = 
       <span class="read-pill">Read article <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9m0 0L8 4m4 4l-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
   </div>
-  <div class="featured-visual" aria-hidden="true">
-    <div class="dot-field"></div>
-    <div class="fv-glow"></div>
-    <div class="fv-mark">
-      <div class="fv-flow">
-        <span class="step">finding</span><span class="arr">→</span>
-        <span class="step">chart</span><span class="arr">→</span>
-        <span class="step">plan</span><span class="arr">→</span>
-        <span class="step">estimate</span><span class="arr">→</span>
-        <span class="step lit">claim</span>
-      </div>
-    </div>
+  <div class="featured-visual" aria-hidden={heroImage ? undefined : 'true'}>
+    {heroImage ? (
+      <img class="featured-img" src={heroImage} alt="" loading="eager" decoding="async" />
+    ) : (
+      <>
+        <div class="dot-field"></div>
+        <div class="fv-glow"></div>
+        <div class="fv-mark">
+          <div class="fv-flow">
+            <span class="step">finding</span><span class="arr">→</span>
+            <span class="step">chart</span><span class="arr">→</span>
+            <span class="step">plan</span><span class="arr">→</span>
+            <span class="step">estimate</span><span class="arr">→</span>
+            <span class="step lit">claim</span>
+          </div>
+        </div>
+      </>
+    )}
   </div>
 </a>

@@ -1,5 +1,6 @@
 # build output
 dist/
+.vercel/
 # generated types
 .astro/
 # dependencies
@@ -9,5 +10,7 @@ npm-debug.log*
 # environment variables
 .env
 .env.production
+# local newsletter dev storage
+data/subscribers.json
 # macOS
 .DS_Store

@@ -88,6 +88,7 @@ const breadcrumbLd = {
   minutesRead={post.data.minutesRead}
   canonical={canonical}
   ogImage={post.data.heroImage ? new URL(post.data.heroImage, site).href : undefined}
+  heroImage={post.data.heroImage}
   related={relatedProps}
 >
   <Fragment slot="jsonld">

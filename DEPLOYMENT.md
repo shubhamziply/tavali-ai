@@ -1,12 +1,13 @@
 # Tavali Website — Deployment & CMS Guide
 
 This is the production Astro site for Tavali, with a Markdown blog managed through
-**Decap CMS**. This guide covers local development, deploying to Netlify
-(recommended), alternative hosts, custom domains, and day-to-day content editing.
+**Decap CMS**. This guide covers local development, deploying to Vercel,
+custom domains, and day-to-day content editing.
 
 - **Framework:** Astro 5 (static output)
 - **Integrations:** `@astrojs/mdx`, `@astrojs/sitemap`
-- **CMS:** Decap CMS (Git Gateway + Netlify Identity in production)
+- **Hosting:** Vercel (see `vercel.json`)
+- **CMS:** Decap CMS (local proxy in dev; GitHub OAuth in production)
 - **Content:** Markdown in `src/content/blog/` (Content Collection, Zod-validated)
 
 ---
@@ -55,84 +56,70 @@ file appears/updates in `src/content/blog/`. The dev server hot-reloads it.
 
 ---
 
-## B. Netlify Deployment (recommended for Decap CMS)
+## B. Vercel Deployment (recommended)
 
-Netlify is the smoothest path because Decap's default auth (Git Gateway +
-Identity) is a Netlify feature.
+The repo includes `vercel.json` with the correct Astro build settings. Vercel
+auto-detects the framework; no adapter is required for this static site.
 
 ### 1. Connect the repository
-1. Push this project to a GitHub (or GitLab) repo.
-2. In Netlify: **Add new site → Import an existing project →** pick the repo.
-3. Build settings (Netlify usually auto-detects Astro):
+1. Push this project to a GitHub (or GitLab/Bitbucket) repo.
+2. In Vercel: **Add New Project → Import** your repo.
+3. Build settings (pre-filled from `vercel.json`):
+   - **Framework Preset:** Astro
    - **Build command:** `npm run build`
-   - **Publish directory:** `dist`
-   - **Node version:** set env var `NODE_VERSION=22` (Site settings → Environment).
-4. **Deploy site.** You'll get a `https://<random-name>.netlify.app` URL.
+   - **Output directory:** `dist`
+   - **Install command:** `npm install`
+4. Under **Environment Variables**, optionally set `NODE_VERSION=22` if you want
+   to pin the Node runtime (Vercel defaults are fine for Astro 5).
+5. **Deploy.** You'll get a `https://<project>.vercel.app` URL.
 
-### 2. Enable Netlify Identity (CMS login)
-1. **Site settings → Identity → Enable Identity.**
-2. **Registration → Registration preferences → Invite only**
-   (so random visitors can't sign up to edit content).
-3. *(Optional)* **External providers** → add Google/GitHub login.
+Every push to `main` triggers a new production deploy automatically.
 
-### 3. Enable Git Gateway (lets the CMS commit to your repo)
-1. **Site settings → Identity → Services → Git Gateway → Enable Git Gateway.**
-   This authorizes the CMS to push commits on an editor's behalf.
+### 2. Preview deployments
+Vercel creates a unique preview URL for each pull request. Use these to review
+content or design changes before merging to `main`.
 
-### 4. Invite yourself as a CMS user
-1. **Identity tab → Invite users →** enter your email.
-2. Accept the email invite, set a password.
+### 3. Production CMS auth (GitHub OAuth)
+```yaml
+backend:
+  name: github
+  repo: your-org/tavali-ai   # your GitHub repo
+  branch: main
+  base_url: https://your-oauth-proxy.example.com
+  auth_endpoint: auth
+```
 
-### 5. Log in and edit
-- Go to **`https://<your-site>.netlify.app/admin/`**.
-- Log in with your Identity credentials.
-- Create/edit posts. **Publishing commits to `main`**, which **auto-triggers a
-  Netlify rebuild** — your post is live in ~1 minute.
+Then run a small OAuth proxy (e.g. [decap-cms-github-backend](https://github.com/vencax/decap-cms-github-backend) or a Cloudflare Worker) and register a GitHub OAuth App with callback URL `https://your-oauth-proxy.example.com/callback`.
 
-> The `public/admin/index.html` already includes the Netlify Identity widget and
-> the post-login redirect, so steps 2–5 work with no code changes.
+**Simpler alternative:** keep editing locally with `npm run cms` + `npm run dev`,
+commit the Markdown changes, and let Vercel redeploy from Git — no OAuth setup
+needed.
 
 ---
 
-## C. Alternative Hosts: Cloudflare Pages / Vercel
+## C. Alternative Hosts
 
-The site itself is plain static output and deploys anywhere.
+The site is plain static output (`dist/`) and deploys anywhere with the same
+build command.
 
-**Build settings (both):**
-- Build command: `npm run build`
-- Output directory: `dist`
-- `NODE_VERSION=22`
+| Host | Build command | Output |
+|---|---|---|
+| Vercel | `npm run build` | `dist` |
+| Cloudflare Pages | `npm run build` | `dist` |
 
-**⚠️ CMS caveat:** Netlify Identity & Git Gateway are **Netlify-only**. On
-Cloudflare/Vercel the `/admin/` UI will load but **won't authenticate**. Options:
-
-1. **GitHub OAuth backend** — register an OAuth app and run a small OAuth proxy
-   (e.g. Cloudflare Worker), then switch `public/admin/config.yml`:
-   ```yaml
-   backend:
-     name: github
-     repo: your-org/your-repo
-     branch: main
-     base_url: https://your-oauth-proxy.example.com
-   ```
-2. **Sveltia CMS** — a drop-in Decap-compatible CMS with built-in GitHub/GitLab
-   auth (no proxy). Replace the Decap script in `public/admin/index.html` with
-   the Sveltia bundle; `config.yml` is reused as-is.
-3. **Keep CMS on Netlify, host pages elsewhere** — point the CMS at the same
-   Git repo; deploys can run on any host watching that branch.
+On non-Vercel hosts, use the same GitHub OAuth or local-edit workflow for the
+CMS (see section B.3).
 
 ---
 
 ## D. Custom Domain
 
-### On Netlify
-1. **Domain settings → Add a custom domain →** e.g. `www.tavali.com`.
-2. Point DNS at Netlify:
-   - **Apex (`tavali.com`)**: `A` record → Netlify load balancer `75.2.60.5`,
-     or use Netlify DNS / an `ALIAS`/`ANAME` to `<site>.netlify.app`.
-   - **`www`**: `CNAME` → `<your-site>.netlify.app`.
-3. Set the primary domain and let Netlify provision the free **Let's Encrypt
-   HTTPS** certificate.
+### On Vercel
+1. **Project → Settings → Domains → Add** e.g. `www.tavali.com` and `tavali.com`.
+2. Point DNS at Vercel (the dashboard shows the exact records):
+   - **Apex (`tavali.com`)**: `A` record → `76.76.21.21`
+   - **`www`**: `CNAME` → `cname.vercel-dns.com`
+3. Vercel provisions a free **Let's Encrypt HTTPS** certificate automatically.
 4. Update **`site`** in `astro.config.mjs` to the final URL (drives the sitemap
    and canonical/OG absolute URLs), then redeploy.
 
@@ -155,15 +142,15 @@ Cloudflare/Vercel the `/admin/` UI will load but **won't authenticate**. Options
    - **Featured** — show as the big featured card on `/blog`
    - **Draft** — see below
    - **Body** — the article, in the rich Markdown editor
-3. **Publish.** Decap commits a new `src/content/blog/<slug>.md`; the host
-   rebuilds and the post appears at `/blog/<slug>/`.
+3. **Publish.** Decap commits a new `src/content/blog/<slug>.md`; Vercel detects
+   the push, rebuilds, and the post appears at `/blog/<slug>/`.
 
 ### Drafts vs published
 - Toggle **Draft = true** to keep a post **out of the live site** (it's filtered
   out of `/blog`, the sitemap, and gets no page). Flip it to `false` to publish.
 - *(Optional upgrade)* For a review/approval flow with a visual "in review"
-  board, add `publish_mode: editorial_workflow` to `config.yml`; with Git
-  Gateway this opens a PR per post instead of committing straight to `main`.
+  board, add `publish_mode: editorial_workflow` to `config.yml`; with a GitHub
+  backend this opens a PR per post instead of committing straight to `main`.
 
 ### Upload & use images
 - In the **Body** editor, click the image button (or drag-drop) — files save to
@@ -175,10 +162,10 @@ Cloudflare/Vercel the `/admin/` UI will load but **won't authenticate**. Options
 Editor clicks Publish in /admin/
         │
         ▼
-Decap CMS  ──(Git Gateway, as the Identity user)──►  commit to `main`
+Decap CMS  ──(GitHub OAuth, as the logged-in user)──►  commit to `main`
         │
         ▼
-Host (Netlify) detects the push  ──►  npm run build  ──►  deploy `dist/`
+Vercel detects the push  ──►  npm run build  ──►  deploy `dist/`
         │
         ▼
 New/updated post is live at /blog/<slug>/   (~1 minute)

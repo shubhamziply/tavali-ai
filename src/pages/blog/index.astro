@@ -6,12 +6,16 @@
  * Blog + BreadcrumbList JSON-LD.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
 import FeaturedPost from '../../components/FeaturedPost.astro';
 import PostCard from '../../components/PostCard.astro';
 import NewsletterRow from '../../components/NewsletterRow.astro';
 import FinalCta from '../../components/FinalCta.astro';
 import { getCollection } from 'astro:content';
+import { getBlogFingerprint } from '../../lib/blog-feed';
+import '../../styles/styles-blog.css';
+
+// Server-rendered so new CMS posts appear without a full site rebuild (dev + deploy).
+export const prerender = false;
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -20,6 +24,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 // Featured = the most recent post flagged featured, else the most recent post.
 const featured = posts.find((p) => p.data.featured) ?? posts[0];
 const rest = posts.filter((p) => p.id !== featured?.id);
+const feedFingerprint = getBlogFingerprint(posts);
+const pollMs = import.meta.env.DEV ? 5000 : 15000;
 
 // Category chips, in the original display order.
 const categories = [
@@ -84,21 +90,30 @@ const breadcrumbLd = {
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
   </Fragment>
 
-  <main id="main">
+  <main
+    id="main"
+    data-blog-feed={feedFingerprint}
+    data-blog-poll={pollMs}
+  >
     <!-- HERO -->
     <section class="hero hero--blog" aria-labelledby="page-h">
       <div class="hero-bg" aria-hidden="true">
         <div class="hero-bg-dots"></div>
+        <canvas class="hero-canvas"></canvas>
         <div class="hero-glow"></div>
       </div>
       <div class="container">
-        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Blog' }]} />
         <div class="hero-grid">
           <div class="hero-copy">
             <span class="eyebrow" data-reveal>The Tavali Blog</span>
             <h1 id="page-h" data-reveal data-delay="1">Ideas for the AI-native dental practice.</h1>
             <p class="hero-def" data-reveal data-delay="1">The Tavali blog covers how <span class="accent">AI is reshaping dentistry</span> — from clinical documentation and claim denials to staffing and multi-location operations.</p>
             <p class="hero-sub" data-reveal data-delay="2">Practical, opinionated writing from the team building the AI-native operating system for dental practices.</p>
+            <div class="blog-hero-meta" data-reveal data-delay="3">
+              <span>{posts.length} {posts.length === 1 ? 'article' : 'articles'}</span>
+              <span class="dot-sep" aria-hidden="true"></span>
+              <span>Updated regularly</span>
+            </div>
           </div>
         </div>
       </div>
@@ -106,14 +121,20 @@ const breadcrumbLd = {
 
     <!-- FEATURED POST -->
     {featured && (
-      <section class="section" id="featured" aria-labelledby="featured-h">
+      <section class="section blog-featured" id="featured" aria-labelledby="featured-label">
         <div class="container">
+          <div class="section-head section-head--compact" data-reveal>
+            <span class="eyebrow" id="featured-label">Featured</span>
+            <h2>Start here.</h2>
+          </div>
           <FeaturedPost
             category={featured.data.category}
             title={featured.data.title}
             excerpt={featured.data.description}
             href={`/blog/${featured.id}/`}
             author={featured.data.author}
+            pubDate={featured.data.pubDate}
+            heroImage={featured.data.heroImage}
             minutesRead={featured.data.minutesRead}
           />
         </div>
@@ -121,28 +142,36 @@ const breadcrumbLd = {
     )}
 
     <!-- CATEGORY FILTER + POST GRID -->
-    <section class="section bg-surface" id="posts" aria-labelledby="posts-h">
+    <section class="section bg-surface blog-posts" id="posts" aria-labelledby="posts-h">
       <div class="container">
-        <div class="section-head" data-reveal style="margin-bottom:1.75rem;">
-          <span class="eyebrow">All posts</span>
-          <h2 id="posts-h">Browse the latest thinking.</h2>
+        <div class="blog-posts-head" data-reveal>
+          <div class="section-head section-head--compact">
+            <span class="eyebrow">All posts</span>
+            <h2 id="posts-h">Browse the latest thinking.</h2>
+            <p class="lead">Filter by topic to find insight on the problems your practice is working through right now.</p>
+          </div>
+          <p class="blog-post-count" id="post-count" aria-live="polite">{rest.length} {rest.length === 1 ? 'post' : 'posts'}</p>
         </div>
-        <nav class="cat-filter" aria-label="Filter by category" data-reveal style="margin-bottom:2.25rem;">
-          {categories.map((cat, i) => (
-            <a href="#posts" class={i === 0 ? 'active' : undefined}>{cat}</a>
+        <nav class="cat-filter" aria-label="Filter by category" data-reveal>
+          <button type="button" class="active" data-cat="all">All topics</button>
+          {categories.map((cat) => (
+            <button type="button" data-cat={cat}>{cat}</button>
           ))}
         </nav>
-        <div class="post-grid">
+        <div class="post-grid" id="post-grid">
           {rest.map((p) => (
             <PostCard
               category={p.data.category}
               title={p.data.title}
               excerpt={p.data.description}
               href={`/blog/${p.id}/`}
+              pubDate={p.data.pubDate}
+              heroImage={p.data.heroImage}
               minutesRead={p.data.minutesRead}
             />
           ))}
         </div>
+        <p class="post-grid-empty" id="post-empty" hidden>No posts in this category yet. Check back soon.</p>
       </div>
     </section>
 
@@ -166,4 +195,35 @@ const breadcrumbLd = {
       sub="Book a 30-minute demo and we’ll walk your team through the platform on your workflows."
     />
   </main>
+
+  <script>
+    import '../../scripts/blog-live.js';
+
+    const filter = document.querySelector('.cat-filter');
+    const cards = [...document.querySelectorAll<HTMLElement>('#post-grid .post-card')];
+    const countEl = document.getElementById('post-count');
+    const emptyEl = document.getElementById('post-empty');
+
+    filter?.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-cat]');
+      if (!btn) return;
+
+      const cat = btn.dataset.cat ?? 'all';
+      filter.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === btn));
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = cat === 'all' || card.dataset.category === cat;
+        card.hidden = !match;
+        if (match) visible += 1;
+      });
+
+      if (countEl) {
+        countEl.textContent = `${visible} ${visible === 1 ? 'post' : 'posts'}`;
+      }
+      if (emptyEl) {
+        emptyEl.hidden = visible > 0;
+      }
+    });
+  </script>
 </BaseLayout>
